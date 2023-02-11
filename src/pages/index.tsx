@@ -5,13 +5,23 @@ import SearchIcon from '@/dynamic/SearchIcon';
 import { useEffect, useRef, useState } from 'react';
 import { categories } from '@/constants/categories';
 import { useRouter } from 'next/router';
+import Twitter from '@/dynamic/socials/twitter';
+import Github from '@/dynamic/socials/github';
+import Telegram from '@/dynamic/socials/telegram';
+import Reddit from '@/dynamic/socials/reddit';
+import Discord from '@/dynamic/socials/discord';
+import Youtube from '@/dynamic/socials/youtube';
+import { AppCard } from '@/components/AppCard';
+import { LendingCard } from '@/components/LendingCard';
+import { NFTCard } from '@/components/NFTCard';
+import { DeFiCard } from '@/components/DeFiCard';
+import { CategoryCard } from '@/components/CategoryCard';
 
 export default function Home() {
   const [stuck, setStuck] = useState<boolean>(false);
   const [header, setHeader] = useState<string>();
 
   const elementRef = useRef<HTMLDivElement>(null);
-
   const defiRef = useRef<HTMLDivElement>(null);
   const marketRef = useRef<HTMLDivElement>(null);
   const lendingRef = useRef<HTMLDivElement>(null);
@@ -94,150 +104,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [currentIndex, direction, categories.length]);
 
-  const CategoryCard = ({ title, icon, num }: any) => {
-    return (
-      <div className="p-5 w-60 bg-[#120F16] rounded-[20px] my-10 mr-8">
-        {icon}
-        <p className="mt-6 text-lg font-semibold text-white">{title}</p>
-        <p className="mt-2 text-neutral-500">{num}</p>
-      </div>
-    );
-  };
-
-  const DeFiCard = ({ icon, name, title, desc }: any) => {
-    return (
-      <div
-        className="px-5 py-6 bg-[#130f17] rounded-3xl w-80 h-[420px] flex flex-col justify-between hover:bg-[#0c0a0e] transition-all duration-300 ease-in-out
-      hover:drop-shadow-[0_4px_60px_rgba(20,241,149,0.15)] hover:ring-primary hover:ring-[0.2px]"
-      >
-        <div>
-          <Image src={icon} alt="" />
-          <p className="mt-6 text-2xl font-semibold text-white">{name}</p>
-          <p className="mt-6 text-lg font-semibold text-[#99969d]">{title}</p>
-          <p className="mt-3 text-[#99969d]">{desc}</p>
-        </div>
-        <Button
-          mt={8}
-          fontSize="16px"
-          bg="primary"
-          size="lg"
-          px={23}
-          py={5}
-          w="100%"
-          fontWeight={600}
-          borderRadius="40px"
-          boxShadow="inset 0px 0px 0px 1px #14F195"
-          _hover={{
-            bg: 'black',
-            color: 'primary',
-          }}
-        >
-          Visit Website
-        </Button>
-      </div>
-    );
-  };
-
-  const NFTCard = ({ icon, cover, name, desc }: any) => {
-    return (
-      <div
-        className="my-5 bg-[#130f17] rounded-3xl w-80 h-[420px] hover:bg-[#0c0a0e] transition-all duration-300 ease-in-out
-      hover:drop-shadow-[0_4px_60px_rgba(20,241,149,0.15)] hover:ring-primary hover:ring-[0.2px]"
-      >
-        <Image src={cover} borderTopRadius="1.5rem" />
-        <div className="px-5 py-6">
-          <Image src={icon} w="64px" h="64px" />
-          <p className="mt-4 text-2xl font-semibold text-white">{name}</p>
-          <p className="mt-2 text-[#99969d] text-lg">{desc}</p>
-        </div>
-      </div>
-    );
-  };
-
-  const LendingCard = ({ icon, name }: any) => {
-    return (
-      <div
-        className="p-7 bg-[#130f17] rounded-3xl w-64 hover:bg-[#0c0a0e] transition-all duration-300 ease-in-out
-      hover:drop-shadow-[0_4px_60px_rgba(20,241,149,0.15)] hover:ring-primary hover:ring-[0.2px]"
-      >
-        <Image src={icon} width="84px" height="84px" mx="auto" />
-        <p className="mt-4 text-center text-xl font-semibold text-white">
-          {name}
-        </p>
-        <Button
-          mt={8}
-          fontSize="16px"
-          bg="primary"
-          size="lg"
-          px={23}
-          py={5}
-          w="100%"
-          fontWeight={600}
-          borderRadius="40px"
-          boxShadow="inset 0px 0px 0px 1px #14F195"
-          _hover={{
-            bg: 'black',
-            color: 'primary',
-          }}
-        >
-          Visit Website
-        </Button>
-      </div>
-    );
-  };
-
-  const AppCard = ({ icon, name, desc }: any) => {
-    return (
-      <div
-        className="p-6 my-5 bg-[#130f17] h-56 flex flex-col justify-between w-[500px] rounded-3xl hover:bg-[#0c0a0e] transition-all duration-300 ease-in-out
-hover:drop-shadow-[0_4px_60px_rgba(20,241,149,0.15)] hover:ring-primary hover:ring-[0.2px]"
-      >
-        <Flex alignItems="center">
-          <Image src={icon} width="84px" height="84px" />
-          <Flex flexDir="column" ml="20px">
-            <p className="text-2xl font-semibold text-white">{name}</p>
-            <p className="mt-2 text-lg text-[#99969d]">{desc}</p>
-          </Flex>
-        </Flex>
-        <Flex w="100%" justifyContent="space-between">
-          <Button
-            px={23}
-            py={5}
-            size="lg"
-            variant="outline"
-            fontSize="14px"
-            borderRadius="40px"
-            borderColor="primary"
-            color="primary"
-            className="w-1/2"
-            _hover={{ bg: 'primary', color: 'black' }}
-            mr="8px"
-          >
-            Learn More
-          </Button>
-          <Button
-            ml="8px"
-            fontSize="16px"
-            bg="primary"
-            size="lg"
-            px={23}
-            py={5}
-            fontWeight={600}
-            borderRadius="40px"
-            className="w-1/2"
-            boxShadow="inset 0px 0px 0px 1px #14F195"
-            _hover={{
-              bg: 'black',
-              color: 'primary',
-            }}
-          >
-            Visit Website
-          </Button>
-        </Flex>
-      </div>
-    );
-  };
-
   const images = [];
   for (let i = 0; i < 8; i++) {
     images.push(<Image key={i} src={`img${i + 1}.png`} />);
@@ -248,8 +114,8 @@ hover:drop-shadow-[0_4px_60px_rgba(20,241,149,0.15)] hover:ring-primary hover:ri
   return (
     <div>
       <Head>
-        <title>Solana Ecosystem Page</title>
-        <meta name="description" content="Generated by create next app" />
+        <title>Solana | Ecosystem</title>
+        <meta name="description" content="by abhwshek" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -288,14 +154,16 @@ hover:drop-shadow-[0_4px_60px_rgba(20,241,149,0.15)] hover:ring-primary hover:ri
               mx="16px"
               borderColor="neutral.600"
             />
-            <Image
-              src="/dp.jpg"
-              alt="profile"
-              width="54"
-              height="54"
-              className="object-cover"
-              borderRadius="full"
-            />
+            <a href="https://twitter.com/abhwshek">
+              <Image
+                src="/dp.jpg"
+                alt="profile"
+                width="54"
+                height="54"
+                className="object-cover"
+                borderRadius="full"
+              />
+            </a>
           </div>
         </div>
       </div>
@@ -546,8 +414,52 @@ hover:drop-shadow-[0_4px_60px_rgba(20,241,149,0.15)] hover:ring-primary hover:ri
             />
           </div>
         </div>
-        <div ref={eventRef}>
-          <h2 className="text-4xl text-white font-bold mt-56">Solana Events</h2>
+        <div ref={eventRef}></div>
+        <div className="flex p-32 items-center">
+          <div className="w-1/2">
+            <p className="text-4xl font-bold text-white">
+              Meet the whole community
+            </p>
+            <p className="text-[#99969d] text-lg mt-5">
+              Join a fast-growing community of developers and innovators
+              connected all over the world, building the new era of the
+              internet.
+            </p>
+          </div>
+
+          <Flex className="w-1/2 mx-auto" justifyContent="space-around">
+            <Flex flexDir="column" gap="16px">
+              <Flex>
+                <Twitter />
+                <p className="text-lg font-semibold text-white ml-3">Twitter</p>
+              </Flex>
+              <Flex>
+                <Github />
+                <p className="text-lg font-semibold text-white ml-3">Github</p>
+              </Flex>
+              <Flex>
+                <Telegram />
+                <p className="text-lg font-semibold text-white ml-3">
+                  Telegram
+                </p>
+              </Flex>
+            </Flex>
+
+            <Flex flexDir="column" gap="16px">
+              <Flex>
+                <Reddit />
+                <p className="text-lg font-semibold text-white ml-3">Reddit</p>
+              </Flex>
+              <Flex>
+                <Discord />
+                <p className="text-lg font-semibold text-white ml-3">Discord</p>
+              </Flex>
+              <Flex>
+                <Youtube />
+                <p className="text-lg font-semibold text-white ml-3">Youtube</p>
+              </Flex>
+            </Flex>
+          </Flex>
         </div>
       </div>
     </div>
