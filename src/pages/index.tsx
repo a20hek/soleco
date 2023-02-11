@@ -283,7 +283,6 @@ export default function Home() {
         <h1 className="text-center font-semibold text-neutral-300 mt-56 tracking-[.2em]">
           TRENDING PROJECTS THIS MONTH
         </h1>
-
         <div className=" flex items-center justify-center relative">
           <div className="w-[200%] h-[300px] border-gray-600 overflow-hidden relative">
             <Box
