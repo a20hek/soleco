@@ -14,7 +14,7 @@ const inter = Inter({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-      <div className={`${inter.variable} font-sans min-h-screen bg-black`}>
+      <div className={`${inter.variable} font-sans min-h-screen bg-[#030105]`}>
         <Navbar />
         <Component {...pageProps} />
         <Analytics />
