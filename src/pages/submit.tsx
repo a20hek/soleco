@@ -16,8 +16,27 @@ import {
   PlusSquareIcon,
   Search2Icon,
 } from '@chakra-ui/icons';
-import { ProjectUploadIcon, ScreenshotUploadIcon } from '@/dynamic/submit';
+import {
+  CheckIcon,
+  ProjectUploadIcon,
+  ScreenshotUploadIcon,
+} from '@/dynamic/submit';
 import SearchIcon from '@/dynamic/SearchIcon';
+
+const sections = [
+  {
+    title: 'Description',
+  },
+  {
+    title: 'Images and Media',
+  },
+  {
+    title: 'Category',
+  },
+  {
+    title: 'Socials',
+  },
+];
 
 function FormElement({
   label,
@@ -81,38 +100,34 @@ export default function Submit() {
         )}
         {/* Sections */}
         <div className="flex gap-4 justify-between">
-          <div className="border-2 border-[#5e5c5f] p-3 flex w-1/4 rounded-[60px] mt-12">
-            <div className="rounded-full bg-white h-5 w-5 flex">
-              <p className="text-black text-xs text-center font-semibold mx-auto my-auto">
-                1
-              </p>
-            </div>
-            <p className="text-sm pl-2">Description</p>
-          </div>
-          <div className="border-2 border-[#5e5c5f] p-3 flex w-1/4 rounded-[60px] mt-12">
-            <div className="rounded-full bg-white h-5 w-5 flex">
-              <p className="text-black text-xs text-center font-semibold mx-auto my-auto">
-                2
-              </p>
-            </div>
-            <p className="text-sm pl-2">Images and Media</p>
-          </div>
-          <div className="border-2 border-[#5e5c5f] p-3 flex w-1/4 rounded-[60px] mt-12">
-            <div className="rounded-full bg-white h-5 w-5 flex">
-              <p className="text-black text-xs text-center font-semibold mx-auto my-auto">
-                3
-              </p>
-            </div>
-            <p className="text-sm pl-2">Category</p>
-          </div>
-          <div className="border-2 border-[#5e5c5f] p-3 flex w-1/4 rounded-[60px] mt-12">
-            <div className="rounded-full bg-white h-5 w-5 flex">
-              <p className="text-black text-xs text-center font-semibold mx-auto my-auto">
-                4
-              </p>
-            </div>
-            <p className="text-sm pl-2">Socials</p>
-          </div>
+          {sections.map((section, i) => {
+            return (
+              <div
+                className={`border-2 border-[#5e5c5f] ${
+                  formStage > i + 1 ? 'border-[#095839]' : 'border-[#5e5c5f]'
+                } p-3 flex w-1/4 rounded-[60px] mt-12`}
+              >
+                <div
+                  className={`rounded-full bg-white h-5 w-5 flex ${
+                    formStage > i + 1 ? 'bg-[#14f195]' : 'bg-white'
+                  }`}
+                >
+                  <p
+                    className={`text-black text-xs text-center font-semibold mx-auto my-auto`}
+                  >
+                    {formStage > i + 1 ? <CheckIcon /> : i + 1}
+                  </p>
+                </div>
+                <p
+                  className={`text-sm pl-2 ${
+                    formStage > i + 1 ? 'text-[#14f195]' : ''
+                  }`}
+                >
+                  {section.title}
+                </p>
+              </div>
+            );
+          })}
         </div>
 
         {/* Form */}
@@ -308,6 +323,18 @@ export default function Submit() {
               htmlFor="telegram"
               type="url"
             />
+            <div className="flex items-center mt-10 justify-between">
+              <button className="flex items-center h-">
+                <ArrowBackIcon />
+                <p className="text-sm">GO BACK</p>
+              </button>
+              <button
+                className="flex items-center border-white border rounded-full py-3 px-6 hover:bg-white hover:text-black transition-all duration-300 active:bg-black active:text-white"
+                onClick={() => setFormStage(4)}
+              >
+                <p className="font-semibold text-sm">SUBMIT PROJECT</p>
+              </button>
+            </div>
           </>
         )}
 
