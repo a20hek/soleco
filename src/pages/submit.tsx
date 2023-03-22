@@ -81,7 +81,7 @@ export default function Submit() {
   const [formStage, setFormStage] = useState<number>(1);
   return (
     <>
-      <div className="max-w-[1080px] mx-auto mt-12 text-[#fbf8ff]">
+      <div className="max-w-[1080px] mx-auto mt-12 text-[#fbf8ff] py-28">
         <h1 className="font-bold text-4xl tracking-tight">
           {formStage === 1
             ? 'Submit a Project'
@@ -103,28 +103,32 @@ export default function Submit() {
           {sections.map((section, i) => {
             return (
               <div
-                className={`border-2 border-[#5e5c5f] ${
-                  formStage > i + 1 ? 'border-[#095839]' : 'border-[#5e5c5f]'
-                } p-3 flex w-1/4 rounded-[60px] mt-12`}
+                className={`${
+                  formStage > i + 1 ? 'bg-gradient' : 'bg-primary-800'
+                } w-1/4 mt-12 rounded-[60px] `}
               >
-                <div
-                  className={`rounded-full bg-white h-5 w-5 flex ${
-                    formStage > i + 1 ? 'bg-[#14f195]' : 'bg-white'
-                  }`}
-                >
-                  <p
-                    className={`text-black text-xs text-center font-semibold mx-auto my-auto`}
+                <div className="p-3 bg-[#030007] flex rounded-[60px] h-[calc(100%_-_2px)] mx-auto mt-[1px] w-[calc(100%_-_2px)]">
+                  <div
+                    className={`rounded-full h-5 w-5 flex ${
+                      formStage > i + 1 ? 'bg-primary-600' : 'bg-primary-800'
+                    }`}
                   >
-                    {formStage > i + 1 ? <CheckIcon /> : i + 1}
+                    <p
+                      className={`text-black text-xs text-center font-semibold mx-auto my-auto`}
+                    >
+                      {formStage > i + 1 ? <CheckIcon /> : i + 1}
+                    </p>
+                  </div>
+                  <p
+                    className={`text-sm pl-2 ${
+                      formStage > i + 1
+                        ? 'text-primary-600'
+                        : 'text-primary-800'
+                    }`}
+                  >
+                    {section.title}
                   </p>
                 </div>
-                <p
-                  className={`text-sm pl-2 ${
-                    formStage > i + 1 ? 'text-[#14f195]' : ''
-                  }`}
-                >
-                  {section.title}
-                </p>
               </div>
             );
           })}
@@ -185,10 +189,10 @@ export default function Submit() {
               />
             </FormControl>
             <button
-              className=" mt-8 mr-0 ml-auto flex items-center border-white border rounded-full py-3 px-6 hover:bg-white hover:text-black transition-all duration-300 active:bg-black active:text-white"
+              className=" mt-8 mr-0 ml-auto flex items-center text-primary-800 border-primary-800 border rounded-full py-3 px-6 hover:bg-primary-800 hover:text-black transition-all duration-300 active:bg-black active:text-white"
               onClick={() => setFormStage(2)}
             >
-              <p>NEXT STEP</p>
+              <p className="font-semibold text-sm">NEXT STEP</p>
               <ArrowForwardIcon />
             </button>
           </>
@@ -196,7 +200,7 @@ export default function Submit() {
         {formStage == 2 && (
           <>
             <h1 className="text-2xl font-semibold mt-16">Project Logo</h1>
-            <p className="mt-2">
+            <p className="mt-1 text-neutral-400">
               Let’s make sure people can find your project easily.
             </p>
 
@@ -204,7 +208,7 @@ export default function Submit() {
               <ProjectUploadIcon />
               <div className="ml-5">
                 <button
-                  className="flex items-center text-black bg-white border-white border rounded-full py-2 px-6 hover:bg-black hover:text-white transition-all duration-300 active:bg-white active:text-black"
+                  className="flex items-center font-medium text-black bg-primary-800 border-white border rounded-full py-2 px-6 hover:bg-black hover:text-white transition-all duration-300 active:bg-white active:text-black"
                   // onClick={() => setFormStage(3)}
                 >
                   Upload your project logo
@@ -217,19 +221,19 @@ export default function Submit() {
             </div>
 
             <h1 className="text-2xl font-semibold mt-16">Screenshots</h1>
-            <p className="mt-2">
+            <p className="mt-1 text-neutral-400">
               We recommend at least 3 screenshots of your project.
             </p>
 
             <div className="flex flex-col items-center outline-2 outline-dashed outline-[#7b787f] rounded-2xl p-10 center mt-5">
               <ScreenshotUploadIcon />
-              <p className="text-[#938dff] mt-2">Browse for files</p>
-              <p className="text-[#7b787f] w-80 mt-2">
+              <p className="text-primary-600 mt-2">Browse for files</p>
+              <p className="text-neutral-500 w-80 mt-2 text-center">
                 Upload at least one image. 1270x760px or higher recommended,
                 max. 5MB each. The first image will be used as preview.
               </p>
               <button
-                className="mt-4 flex items-center text-black bg-white border-white border rounded-full py-2 px-6 hover:bg-black hover:text-white transition-all duration-300 active:bg-white active:text-black"
+                className="flex items-center font-medium text-black bg-primary-800 border-white border rounded-full py-2 px-6 mt-4 hover:bg-black hover:text-white transition-all duration-300 active:bg-white active:text-black"
                 // onClick={() => setFormStage(3)}
               >
                 Browse
@@ -247,11 +251,11 @@ export default function Submit() {
             </div>
             <div className="flex items-center mt-10 justify-between">
               <button className="flex items-center h-">
-                <ArrowBackIcon />
-                <p className="text-sm">GO BACK</p>
+                <ArrowBackIcon mr={1} color="#edddff" />
+                <p className="text-sm text-primary-800">GO BACK</p>
               </button>
               <button
-                className="flex items-center border-white border rounded-full py-3 px-6 hover:bg-white hover:text-black transition-all duration-300 active:bg-black active:text-white"
+                className="flex items-center border-primary-800 border text-primary-800 rounded-full py-3 px-6 hover:bg-primary-800 hover:text-black transition-all duration-300 active:bg-black active:text-white"
                 onClick={() => setFormStage(3)}
               >
                 <p className="font-semibold text-sm">NEXT STEP</p>
@@ -266,7 +270,7 @@ export default function Submit() {
             <h1 className="text-2xl font-semibold mt-16">
               Select a project category
             </h1>
-            <p className="mt-2">Select up to 3 categories</p>
+            <p className="mt-1 text-neutral-400">Select up to 3 categories</p>
             <InputGroup mt={5}>
               <InputLeftElement
                 pointerEvents="none"
@@ -287,14 +291,16 @@ export default function Submit() {
               />
             </InputGroup>
             <h1 className="text-2xl font-semibold mt-16">Project Status</h1>
-            <p className="mt-2">How far along is the project?</p>
+            <p className="mt-1 text-neutral-400">
+              How far along is the project?
+            </p>
             <div className="flex items-center mt-10 justify-between">
               <button className="flex items-center h-">
-                <ArrowBackIcon />
-                <p className="text-sm">GO BACK</p>
+                <ArrowBackIcon mr={1} color="#edddff" />
+                <p className="text-sm text-primary-800">GO BACK</p>
               </button>
               <button
-                className="flex items-center border-white border rounded-full py-3 px-6 hover:bg-white hover:text-black transition-all duration-300 active:bg-black active:text-white"
+                className="flex items-center border-primary-800 border rounded-full py-3 px-6 hover:bg-primary-800 text-primary-800 hover:text-black transition-all duration-300 active:bg-black active:text-white"
                 onClick={() => setFormStage(4)}
               >
                 <p className="font-semibold text-sm">NEXT STEP</p>
@@ -325,11 +331,11 @@ export default function Submit() {
             />
             <div className="flex items-center mt-10 justify-between">
               <button className="flex items-center h-">
-                <ArrowBackIcon />
-                <p className="text-sm">GO BACK</p>
+                <ArrowBackIcon mr={1} color="#edddff" />
+                <p className="text-sm text-primary-800">GO BACK</p>
               </button>
               <button
-                className="flex items-center border-white border rounded-full py-3 px-6 hover:bg-white hover:text-black transition-all duration-300 active:bg-black active:text-white"
+                className="flex items-center bg-gradient rounded-full py-3 px-6 hover:bg-white hover:text-black transition-all duration-300 active:bg-black active:text-white"
                 onClick={() => setFormStage(4)}
               >
                 <p className="font-semibold text-sm">SUBMIT PROJECT</p>
