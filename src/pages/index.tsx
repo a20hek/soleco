@@ -47,6 +47,7 @@ export default function Home() {
       </div>
     );
   };
+  const router = useRouter();
 
   return (
     <div>
@@ -65,11 +66,42 @@ export default function Home() {
         bgPosition="center"
         position="relative"
       >
-        <div className="mx-auto max-w-[1128px] px-36 pt-48">
+        <div className="mx-auto max-w-[1128px] px-36 pt-40">
           <h1 className="text-center text-7xl font-semibold text-white">
             Discover the Hottest Projects Built on Solana
           </h1>
         </div>
+        {/* <Image src="/globe.png" className="h-1/2 w-full" /> */}
+        <div className="mt-6 flex justify-center gap-4">
+          <Button
+            color="#440092"
+            bg="white"
+            rounded="full"
+            size="lg"
+            // py={4}
+            px={12}
+            h={14}
+            onClick={() => router.push('/submit')}
+          >
+            Submit a Project
+          </Button>
+          <Button
+            variant="outline"
+            borderWidth="2px"
+            rounded="full"
+            color="white"
+            _hover={{ bg: 'none', borderColor: '#995AE0' }}
+            _active={{ bg: 'none', borderColor: '#CEA3FF', color: '#CEA3FF' }}
+            size="lg"
+            // py={4}
+            px={12}
+            h={14}
+            onClick={() => router.push('/#projects')}
+          >
+            Explore Projects
+          </Button>
+        </div>
+        <Image src="/globe.png" className="mx-auto" />
         <Box
           position="absolute"
           bottom="0"
@@ -81,7 +113,7 @@ export default function Home() {
       <div className="mx-auto max-w-[1128px]">
         {/* projects */}
 
-        <h2 className="text-4xl font-bold tracking-[-0.02em] text-white">
+        <h2 className="mt-10 text-4xl font-bold tracking-[-0.02em] text-white">
           Top Projects
         </h2>
         <div className="flex justify-between">
@@ -121,7 +153,10 @@ export default function Home() {
           </div>
         </div>
         <div className="mt-64 flex justify-between">
-          <h2 className="text-4xl font-bold tracking-[-0.02em] text-white">
+          <h2
+            className="text-4xl font-bold tracking-[-0.02em] text-white"
+            id="projects"
+          >
             Explore all projects
           </h2>
           <div className="flex">

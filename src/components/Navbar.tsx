@@ -32,10 +32,10 @@ export default function Navbar() {
         <div className="mx-auto flex justify-between py-5">
           <Logo />
           <div className="flex w-1/2 justify-between">
-            <NavMenu>Projects</NavMenu>
+            {/* <NavMenu>Projects</NavMenu>
             <NavMenu>Events</NavMenu>
             <NavMenu>Community</NavMenu>
-            <NavMenu>Newsletter</NavMenu>
+            <NavMenu>Newsletter</NavMenu> */}
           </div>
         </div>
       </div>
