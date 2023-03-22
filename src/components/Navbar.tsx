@@ -28,10 +28,10 @@ export default function Navbar() {
 
   return (
     <Center>
-      <div className="fixed top-6 z-20 bg-black/[0.72] w-[80%] max-w-[1200px] mx-auto rounded-full px-8 shadow-md backdrop-blur-2xl">
-        <div className="flex justify-between mx-auto py-5">
+      <div className="fixed top-6 z-20 mx-auto w-[80%] max-w-[1200px] rounded-full bg-black/[0.72] px-8 shadow-md backdrop-blur-2xl">
+        <div className="mx-auto flex justify-between py-5">
           <Logo />
-          <div className="flex justify-between w-1/2">
+          <div className="flex w-1/2 justify-between">
             <NavMenu>Projects</NavMenu>
             <NavMenu>Events</NavMenu>
             <NavMenu>Community</NavMenu>

@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <div
-        className={`${interTight.variable} font-sans min-h-screen bg-[#030007]`}
+        className={`${interTight.variable} min-h-screen bg-[#030007] font-sans`}
       >
         <Navbar />
         <Component {...pageProps} />

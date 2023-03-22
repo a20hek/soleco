@@ -1,7 +1,7 @@
 import ST from '@/dynamic/ST';
 import { Image } from '@chakra-ui/react';
 
-interface Project {
+interface ProjectType {
   name: string;
   description: string;
   logo: string;
@@ -17,37 +17,40 @@ const Project = ({
   cover,
   tags,
   isSuperteam,
-}: Project) => {
+}: ProjectType) => {
   return (
     <div
-      className="bg-card rounded-3xl w-[21rem] my-5 hover:bg-black transition-all 
-      duration-500 hover:ring-inset hover:ring-card hover:ring-2 group h-[22rem]"
+      className="group my-5 h-[22rem] w-[21rem] rounded-3xl bg-card 
+      transition-all duration-500 hover:bg-black hover:ring-2 hover:ring-inset hover:ring-card"
     >
       <Image
-        className="object-cover w-full rounded-t-3xl h-3/5 group-hover:h-2/5 transition-all duration-300"
+        className="h-3/5 w-full rounded-t-3xl object-cover transition-all duration-300 group-hover:h-2/5"
         src={cover}
         alt={name}
       />
-      <div className="p-6 h-2/5 group-hover:h-3/5 justify-center transition-all duration-300">
+      <div className="h-2/5 justify-center p-6 transition-all duration-300 group-hover:h-3/5">
         <div className="flex justify-between">
           <Image
             height={12}
             width={12}
             src={logo}
             alt={name}
-            className="object-cover w-12 h-12"
+            className="h-12 w-12 object-cover"
           />
           <div className="flex items-center gap-2">
             {isSuperteam && <ST />}
-            {tags.map((tag) => (
-              <div className="bg-neutral-900 rounded-md py-1 px-3 h-fit">
-                <p className="text-neutral-300 text-xs">{tag}</p>
+            {tags.map((tag, i) => (
+              <div
+                key={i}
+                className="h-fit rounded-md bg-neutral-900 py-1 px-3"
+              >
+                <p className="text-xs text-neutral-300">{tag}</p>
               </div>
             ))}
           </div>
         </div>
-        <div className="text-white font-semibold text-xl mt-2">{name}</div>
-        <div className="text-neutral-300 mt-2 h-0 opacity-0 group-hover:opacity-100 duration-100 transition-all ease-in-out group-hover:duration-500">
+        <div className="mt-2 text-xl font-semibold text-white">{name}</div>
+        <div className="mt-2 h-0 text-neutral-300 opacity-0 transition-all duration-100 ease-in-out group-hover:opacity-100 group-hover:duration-500">
           {description}
         </div>
       </div>
@@ -61,36 +64,39 @@ const TrendingTopProject = ({
   logo,
   cover,
   tags,
-}: Project) => {
+}: ProjectType) => {
   return (
     <div
-      className="bg-card rounded-2xl w-1/2 my-6 hover:bg-black transition-all 
-      duration-500 mr-4 hover:ring-inset hover:ring-card hover:ring-2 group h-[24rem]"
+      className="group my-6 mr-4 h-[24rem] w-1/2 rounded-2xl 
+      bg-card transition-all duration-500 hover:bg-black hover:ring-2 hover:ring-inset hover:ring-card"
     >
       <Image
-        className="object-cover w-full rounded-t-3xl h-2/3"
+        className="h-2/3 w-full rounded-t-3xl object-cover"
         src={cover}
         alt={name}
       />
-      <div className="p-6 flex w-full">
-        <div className="flex items-center w-full">
+      <div className="flex w-full p-6">
+        <div className="flex w-full items-center">
           <Image
             src={logo}
             alt={name}
-            className="object-cover h-[4.5rem] rounded-full"
+            className="h-[4.5rem] rounded-full object-cover"
           />
           <div className="ml-4 w-full">
-            <div className="flex justify-between w-full">
-              <div className="text-white font-semibold text-xl">{name}</div>
+            <div className="flex w-full justify-between">
+              <div className="text-xl font-semibold text-white">{name}</div>
               <div className="flex gap-2">
-                {tags.map((tag) => (
-                  <div className="bg-neutral-900 rounded-md py-1 px-3 w-fit h-fit">
-                    <p className="text-neutral-300 text-xs">{tag}</p>
+                {tags.map((tag, i) => (
+                  <div
+                    key={i}
+                    className="h-fit w-fit rounded-md bg-neutral-900 py-1 px-3"
+                  >
+                    <p className="text-xs text-neutral-300">{tag}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="text-neutral-300 mt-1">{description}</div>
+            <div className="mt-1 text-neutral-300">{description}</div>
           </div>
         </div>
       </div>
@@ -98,30 +104,33 @@ const TrendingTopProject = ({
   );
 };
 
-const TrendingSubProject = ({ name, description, logo, tags }: Project) => {
+const TrendingSubProject = ({ name, description, logo, tags }: ProjectType) => {
   return (
     <div
-      className="bg-card rounded-2xl w-full my-3 hover:bg-black transition-all 
-      duration-500 hover:ring-inset hover:ring-card hover:ring-2 group h-32 px-6 py-2 flex"
+      className="group my-3 flex h-32 w-full rounded-2xl 
+      bg-card px-6 py-2 transition-all duration-500 hover:bg-black hover:ring-2 hover:ring-inset hover:ring-card"
     >
       <div className="flex items-center">
         <Image
           src={logo}
           alt={name}
-          className="object-cover h-[4.5rem] w-[4.5rem]"
+          className="h-[4.5rem] w-[4.5rem] object-cover"
         />
         <div className="ml-4">
           <div className="flex justify-between">
-            <div className="text-white font-semibold text-xl">{name}</div>
+            <div className="text-xl font-semibold text-white">{name}</div>
             <div className="flex gap-2">
-              {tags.map((tag) => (
-                <div className="bg-neutral-900 rounded-md py-1 px-3 w-fit h-fit">
-                  <p className="text-neutral-300 text-xs">{tag}</p>
+              {tags.map((tag, i) => (
+                <div
+                  key={i}
+                  className="h-fit w-fit rounded-md bg-neutral-900 py-1 px-3"
+                >
+                  <p className="text-xs text-neutral-300">{tag}</p>
                 </div>
               ))}
             </div>
           </div>
-          <div className="text-neutral-300 mt-1">{description}</div>
+          <div className="mt-1 text-neutral-300">{description}</div>
         </div>
       </div>
     </div>
