@@ -6,6 +6,7 @@ import {
   MenuButton,
   MenuList,
   Flex,
+  Center,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import React from 'react';
@@ -19,7 +20,6 @@ export default function Navbar() {
         <MenuButton color="neutral.400" _hover={{ color: 'neutral.200' }}>
           <Flex alignContent="baseline">
             <p>{children}</p>
-            <ChevronDownIcon h="24px" w="24px" />
           </Flex>
         </MenuButton>
       </Menu>
@@ -27,16 +27,18 @@ export default function Navbar() {
   };
 
   return (
-    <div className="bg-black sticky top-0 z-20">
-      <div className="flex justify-between max-w-[1080px] mx-auto py-6">
-        <Logo />
-        <div className="flex justify-between w-1/2">
-          <NavMenu>Learn</NavMenu>
-          <NavMenu>Build</NavMenu>
-          <NavMenu>Network</NavMenu>
-          <NavMenu>Community</NavMenu>
+    <Center>
+      <div className="fixed top-6 z-20 bg-black/[0.72] w-[80%] max-w-[1200px] mx-auto rounded-full px-8 shadow-md backdrop-blur-2xl">
+        <div className="flex justify-between mx-auto py-5">
+          <Logo />
+          <div className="flex justify-between w-1/2">
+            <NavMenu>Projects</NavMenu>
+            <NavMenu>Events</NavMenu>
+            <NavMenu>Community</NavMenu>
+            <NavMenu>Newsletter</NavMenu>
+          </div>
         </div>
       </div>
-    </div>
+    </Center>
   );
 }

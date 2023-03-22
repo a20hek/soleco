@@ -7,11 +7,33 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#14F195',
+        primary: {
+          100: '#1D003D',
+          200: '#260052',
+          300: '#440092',
+          400: '#651DB8',
+          500: '#995AE0',
+          600: '#CEA3FF',
+          700: '#E4CCFF',
+          800: '#EDDDFF',
+        },
+        card: '#0D0B0F',
+        accents: '#DE78F8',
+        input: '#100F12',
+      },
+      backgroundImage: {
+        CTA: 'linear-gradient(295.49deg, #42008F 16.14%, #8533B8 83.86%)',
+        gradient:
+          'linear-gradient(315deg, #22093F 0%, #611CB8 33.85%, #A94EE4 77.08%, #DE78F8 100%)',
       },
       fontFamily: {
-        sans: ['var(--font-inter)'],
+        sans: ['var(--font-inter-tight)'],
       },
+    },
+  },
+  variants: {
+    extend: {
+      display: ['group-hover'],
     },
   },
   plugins: [],
