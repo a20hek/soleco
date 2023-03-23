@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React, {
+  ChangeEvent,
+  MutableRefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   FormControl,
   Input,
   FormLabel,
-  FormHelperText,
   Textarea,
-  Button,
   InputGroup,
   InputLeftElement,
 } from '@chakra-ui/react';
-import {
-  AddIcon,
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  PlusSquareIcon,
-  Search2Icon,
-} from '@chakra-ui/icons';
+import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import {
   CheckIcon,
   ProjectUploadIcon,
   ScreenshotUploadIcon,
 } from '@/dynamic/submit';
 import SearchIcon from '@/dynamic/SearchIcon';
+import { useForm } from 'react-hook-form';
+import Image from 'next/image';
 
 const sections = [
   {
@@ -60,7 +60,6 @@ function FormElement({
         )}
       </div>
       <Input
-        onChange={(e) => setChar(e.target.value.length)}
         type={type}
         id="name"
         placeholder={placeholder}
@@ -71,6 +70,7 @@ function FormElement({
         h="44px"
         maxLength={maxLength}
         {...props}
+        onChange={(e) => setChar(e.target.value.length)}
       />
     </FormControl>
   );
@@ -79,9 +79,68 @@ function FormElement({
 export default function Submit() {
   const [descCharCount, setDescCharCount] = useState<number>(0);
   const [formStage, setFormStage] = useState<number>(1);
+  const { register, handleSubmit } = useForm();
+  const logoUpload = useRef() as MutableRefObject<HTMLInputElement>;
+  const screenshotUpload = useRef() as MutableRefObject<HTMLInputElement>;
+
+  const handleLogoUpload = () => {
+    logoUpload.current.click();
+  };
+
+  const handleScreenshotUpload = () => {
+    screenshotUpload.current.click();
+  };
+
+  const [selectedLogo, setselectedLogo] = useState<File | null>(null);
+  const [selectedScreenshots, setselectedScreenshots] = useState<File[]>([]);
+
+  // const handleLogoSelect = (e: ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     setselectedLogo(e.target.files[0]);
+  //   }
+  // };
+
+  // const previewLogo = () => {
+  //   const url = URL.createObjectURL(selectedLogo);
+  //   return (
+  //     <div className="mt-4 h-16 w-16 rounded-2xl  outline-dashed outline-2 outline-primary-600">
+  //       <img
+  //         src={url}
+  //         alt={selectedLogo.name}
+  //         className="h-16 w-16 rounded-2xl object-cover"
+  //       />
+  //     </div>
+  //   );
+  // };
+
+  const handleScreenshotSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      setselectedScreenshots(filesArray);
+    }
+  };
+
+  const previewScreenshots = selectedScreenshots.map((image) => {
+    const url = URL.createObjectURL(image);
+    return (
+      <div
+        key={image.name}
+        className="mt-4 h-16 w-16 rounded-2xl  outline-dashed outline-2 outline-[#7b787f]"
+      >
+        <Image
+          src={url}
+          alt={image.name}
+          className="h-16 w-16 rounded-2xl object-cover"
+          height={16}
+          width={16}
+        />
+      </div>
+    );
+  });
+
   return (
     <>
-      <div className="mx-auto mt-12 max-w-[1080px] py-28 text-[#fbf8ff]">
+      <div className="mx-auto mt-12 max-w-[800px] py-28 text-[#fbf8ff]">
         <h1 className="text-4xl font-bold tracking-tight">
           {formStage === 1
             ? 'Submit a Project'
@@ -108,9 +167,9 @@ export default function Submit() {
                   formStage > i + 1 ? 'bg-gradient' : 'bg-primary-800'
                 } mt-12 w-1/4 rounded-[60px] `}
               >
-                <div className="mx-auto mt-[1px] flex h-[calc(100%_-_2px)] w-[calc(100%_-_2px)] rounded-[60px] bg-[#030007] p-3">
+                <div className="mx-auto mt-[1px] flex  h-[calc(100%_-_2px)] w-[calc(100%_-_2px)] items-center rounded-[60px] bg-[#030007] p-3">
                   <div
-                    className={`flex h-5 w-5 rounded-full ${
+                    className={`ml-1 flex h-5 w-5 rounded-full ${
                       formStage > i + 1 ? 'bg-primary-600' : 'bg-primary-800'
                     }`}
                   >
@@ -143,24 +202,21 @@ export default function Submit() {
               placeholder="Project Name"
               maxLength={40}
               htmlFor="name"
+              {...register('name')}
             />
             <FormElement
               label="Tagline"
               placeholder="A one sentence description of the project"
               maxLength={260}
               htmlFor="tagline"
+              {...register('tagline')}
             />
             <FormElement
               label="Website Link"
-              placeholder="Project Name"
+              placeholder="https://example.com"
               type="url"
-              htmlFor="name"
-            />
-            <FormElement
-              label="Description"
-              placeholder="Project Name"
-              maxLength={40}
-              htmlFor="name"
+              htmlFor="website"
+              {...register('website')}
             />
 
             <FormControl marginTop={10}>
@@ -178,15 +234,16 @@ export default function Submit() {
                 </p>
               </div>
               <Textarea
-                onChange={(e) => setDescCharCount(e.target.value.length)}
                 id="name"
                 placeholder="A description of the project..."
                 variant="filled"
                 bg="#120f16"
                 _hover={{ bg: '#141118' }}
                 _placeholder={{ color: '#7b787f' }}
-                h="200px"
+                h="160px"
                 maxLength={400}
+                {...register('description')}
+                onChange={(e) => setDescCharCount(e.target.value.length)}
               />
             </FormControl>
             <button
@@ -206,11 +263,13 @@ export default function Submit() {
             </p>
 
             <div className="mt-5 flex items-center">
+              {/* {selectedLogo ? previewLogo :  */}
               <ProjectUploadIcon />
+              {/* } */}
               <div className="ml-5">
                 <button
                   className="flex items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
-                  // onClick={() => setFormStage(3)}
+                  onClick={() => handleLogoUpload()}
                 >
                   Upload your project logo
                 </button>
@@ -219,6 +278,17 @@ export default function Submit() {
                   max 5MB.
                 </p>
               </div>
+              <input
+                {...register('logo')}
+                type="file"
+                name="logo"
+                id="logo"
+                max={3}
+                style={{ display: 'none' }}
+                ref={logoUpload}
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+                // onChange={handleLogoSelect}
+              />
             </div>
 
             <h1 className="mt-16 text-2xl font-semibold">Screenshots</h1>
@@ -235,23 +305,38 @@ export default function Submit() {
               </p>
               <button
                 className="mt-4 flex items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
-                // onClick={() => setFormStage(3)}
+                onClick={() => handleScreenshotUpload()}
               >
                 Browse
               </button>
+              <input
+                {...register('screenshots')}
+                type="file"
+                name="screenshot"
+                id="screenshot"
+                max={3}
+                style={{ display: 'none' }}
+                ref={screenshotUpload}
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+                multiple
+                onChange={handleScreenshotSelect}
+              />
             </div>
 
             <div className="mt-2 flex gap-5">
-              <div className="mt-4 w-fit rounded-2xl p-5 outline-dashed outline-2 outline-[#7b787f]">
+              {previewScreenshots}
+              <div
+                className="mt-4 w-fit cursor-pointer rounded-2xl p-5 outline-dashed outline-2 outline-[#7b787f]"
+                onClick={handleScreenshotUpload}
+              >
                 <AddIcon h={5} w={5} color="#7b787f" />
               </div>
-              <div className="mt-4 w-fit rounded-2xl p-8 outline-dashed outline-2 outline-[#7b787f]"></div>
-              <div className="mt-4 w-fit rounded-2xl p-8 outline-dashed outline-2 outline-[#7b787f]"></div>
-              <div className="mt-4 w-fit rounded-2xl p-8 outline-dashed outline-2 outline-[#7b787f]"></div>
-              <div className="mt-4 w-fit rounded-2xl p-8 outline-dashed outline-2 outline-[#7b787f]"></div>
             </div>
             <div className="mt-10 flex items-center justify-between">
-              <button className="flex items-center">
+              <button
+                className="flex items-center"
+                onClick={() => setFormStage(1)}
+              >
                 <ArrowBackIcon mr={1} color="#edddff" />
                 <p className="text-sm text-primary-800">GO BACK</p>
               </button>
@@ -293,7 +378,10 @@ export default function Submit() {
               How far along is the project?
             </p>
             <div className="mt-10 flex items-center justify-between">
-              <button className="flex items-center">
+              <button
+                className="flex items-center"
+                onClick={() => setFormStage(2)}
+              >
                 <ArrowBackIcon mr={1} color="#edddff" />
                 <p className="text-sm text-primary-800">GO BACK</p>
               </button>
@@ -314,21 +402,27 @@ export default function Submit() {
               placeholder="https://twitter.com/project"
               htmlFor="twitter"
               type="url"
+              {...register('twitter')}
             />
             <FormElement
               label="Discord"
               placeholder="https://discord.com/project"
               htmlFor="discord"
               type="url"
+              {...register('discord')}
             />
             <FormElement
               label="Telegram"
               placeholder="https://telegram.com/project"
               htmlFor="telegram"
               type="url"
+              {...register('telegram')}
             />
             <div className="mt-10 flex items-center justify-between">
-              <button className="flex items-center">
+              <button
+                className="flex items-center"
+                onClick={() => setFormStage(3)}
+              >
                 <ArrowBackIcon mr={1} color="#edddff" />
                 <p className="text-sm text-primary-800">GO BACK</p>
               </button>

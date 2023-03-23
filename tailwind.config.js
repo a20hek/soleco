@@ -29,6 +29,9 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-inter-tight)'],
       },
+      screens: {
+        md: '840px',
+      },
     },
   },
   variants: {

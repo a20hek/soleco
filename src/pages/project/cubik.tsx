@@ -6,7 +6,7 @@ import LinkArrow from '@/dynamic/LinkArrow';
 export default function Project() {
   return (
     <div>
-      <div className="mx-auto max-w-[1128px] py-44">
+      <div className="mx-auto w-[94%] max-w-[1128px] py-44">
         <div className="flex justify-between">
           <div className="flex items-center gap-5">
             <Image

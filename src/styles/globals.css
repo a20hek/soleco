@@ -33,3 +33,13 @@
   background-color: #121113;
   border-radius: 10px;
 }
+.categories {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+.categories::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}

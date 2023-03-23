@@ -6,35 +6,35 @@ import React from 'react';
 export default function Footer() {
   return (
     <div className="border-t border-primary-100 pt-9">
-      <div className="mx-auto max-w-[1128px]">
-        <div className="mb-9 flex justify-between">
-          <div>
+      <div className="mx-auto w-[94%] max-w-[1128px]">
+        <div className="mb-9 flex flex-col items-center justify-between md:flex-row">
+          <div className="flex flex-col items-center md:items-start">
             <Logo />
             <p className="mt-4 text-sm text-neutral-500">
               Managed by Superteam
             </p>
-            <div className="mt-8 flex gap-7">
+            <div className=" mt-4 flex gap-7 md:mt-8 ">
               <Discord />
               <Twitter />
               <Github />
               <Youtube />
             </div>
           </div>
-          <div className="flex gap-36">
+          <div className="flex flex-col text-center md:flex-row md:gap-36 md:text-left">
             <div>
-              <p className="mb-2 text-xs font-semibold tracking-[0.08em] text-neutral-500">
+              <p className="mb-2 mt-10 text-xs font-semibold tracking-[0.08em] text-neutral-500 md:mt-0">
                 ECOSYSTEM
               </p>
-              <p className="my-2 text-primary-800">Explore</p>
-              <p className="my-2 text-primary-800">Submit Project</p>
+              <p className="my-4 text-primary-800 md:my-2">Explore</p>
+              <p className="my-4 text-primary-800 md:my-2">Submit Project</p>
             </div>
             <div>
-              <p className="mb-2 text-xs font-semibold tracking-[0.08em] text-neutral-500">
+              <p className="mb-2 mt-10 text-xs font-semibold tracking-[0.08em] text-neutral-500 md:mt-0">
                 MORE BY SUPERTEAM
               </p>
-              <p className="my-2 text-primary-800">Earn</p>
-              <p className="my-2 text-primary-800">Learn</p>
-              <p className="my-2 text-primary-800">Build</p>
+              <p className="my-4 text-primary-800 md:my-2">Earn</p>
+              <p className="my-4 text-primary-800 md:my-2">Learn</p>
+              <p className="my-4 text-primary-800 md:my-2">Build</p>
             </div>
           </div>
         </div>

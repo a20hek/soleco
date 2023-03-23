@@ -12,6 +12,9 @@ import {
   InputLeftElement,
   Menu,
   MenuButton,
+  MenuItem,
+  MenuList,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import SearchIcon from '@/dynamic/SearchIcon';
 import { useEffect, useRef, useState } from 'react';
@@ -28,7 +31,8 @@ import {
 import ST from '@/dynamic/ST';
 import ChevronDown from '@/dynamic/chevrondown';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import SortIcon from '@/dynamic/sorticon';
+import { SortIcon, SortIconMobile } from '@/dynamic/sorticon';
+import { categories } from 'constants/categories';
 
 import {
   TrendingSubProject,
@@ -38,11 +42,12 @@ import {
 
 export default function Home() {
   const [showProjects, setShowProjects] = useState<number>(9);
+  const [isLargerthan668] = useMediaQuery('(min-width: 668px)');
 
   const CategoryCard = ({ name }: { name: string }) => {
     const [selected, setSelected] = useState<boolean>(false);
     return (
-      <div className="rounded-full border border-[#3d3a41] px-7 py-3">
+      <div className="cursor-pointer select-none rounded-full border border-[#3d3a41] px-7 py-3">
         <p className="font-semibold text-white">{name}</p>
       </div>
     );
@@ -66,21 +71,22 @@ export default function Home() {
         bgPosition="center"
         position="relative"
       >
-        <div className="mx-auto max-w-[1128px] px-36 pt-40">
-          <h1 className="text-center text-7xl font-semibold text-white">
+        <div className="mx-auto w-[90%] max-w-[1128px] px-8 pt-40 md:px-36">
+          <h1 className="text-center text-5xl font-semibold text-white md:text-7xl">
             Discover the Hottest Projects Built on Solana
           </h1>
         </div>
         {/* <Image src="/globe.png" className="h-1/2 w-full" /> */}
-        <div className="mt-6 flex justify-center gap-4">
+        <div className="mt-6 flex flex-col justify-center gap-4 md:flex-row">
           <Button
             color="#440092"
             bg="white"
             rounded="full"
             size="lg"
-            // py={4}
             px={12}
             h={14}
+            mx={{ base: 'auto', md: '0px' }}
+            w={{ base: '60%', md: 'auto' }}
             onClick={() => router.push('/submit')}
           >
             Submit a Project
@@ -93,7 +99,8 @@ export default function Home() {
             _hover={{ bg: 'none', borderColor: '#995AE0' }}
             _active={{ bg: 'none', borderColor: '#CEA3FF', color: '#CEA3FF' }}
             size="lg"
-            // py={4}
+            mx={{ base: 'auto', md: '0px' }}
+            w={{ base: '60%', md: 'auto' }}
             px={12}
             h={14}
             onClick={() => router.push('/#projects')}
@@ -101,7 +108,7 @@ export default function Home() {
             Explore Projects
           </Button>
         </div>
-        <Image src="/globe.png" className="mx-auto" />
+        {/* <Image src="/globe.png" className="mx-auto mt-auto mb-0" /> */}
         <Box
           position="absolute"
           bottom="0"
@@ -110,18 +117,18 @@ export default function Home() {
           h="30vh"
         />
       </Box>
-      <div className="mx-auto max-w-[1128px]">
+      <div className="mx-auto w-[90%] max-w-[1128px]">
         {/* projects */}
 
-        <h2 className="mt-10 text-4xl font-bold tracking-[-0.02em] text-white">
+        <h2 className="mt-10 text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl">
           Top Projects
         </h2>
-        <div className="flex justify-between">
+        <div className="flex flex-col justify-between md:flex-row">
           <TrendingTopProject
             logo="/cubik.png"
             cover="/cubik-cover.png"
             name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana"
+            description="Cubik is a decentralized, non-custodial, and permissionless exchange f"
             tags={['DEX', 'Solana']}
             isSuperteam={true}
           />
@@ -152,14 +159,14 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="mt-64 flex justify-between">
+        <div className="mt-36 flex flex-col justify-between md:mt-64 md:flex-row">
           <h2
-            className="text-4xl font-bold tracking-[-0.02em] text-white"
+            className="text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl"
             id="projects"
           >
             Explore all projects
           </h2>
-          <div className="flex">
+          <div className="mt-4 flex justify-between md:mt-0">
             <InputGroup w={'30rem'}>
               <InputLeftElement pointerEvents="none" h="48px" w="48px">
                 <SearchIcon />
@@ -177,81 +184,139 @@ export default function Home() {
               />
             </InputGroup>
             <Menu>
-              <MenuButton
-                as={Button}
-                leftIcon={<SortIcon />}
-                rightIcon={<ChevronDownIcon color="#edddff" />}
-                _hover={{ bgColor: 'none' }}
-                _active={{ bgColor: 'none' }}
-                bg="none"
-                rounded="full"
-                borderColor="#edddff"
-                borderWidth="2px"
-                color="#edddff"
-                fontSize="16px"
-                h="48px"
-                fontWeight={500}
-              >
-                Sort By
-              </MenuButton>
+              {isLargerthan668 ? (
+                <MenuButton
+                  as={Button}
+                  leftIcon={<SortIcon />}
+                  rightIcon={<ChevronDownIcon color="#edddff" />}
+                  _hover={{ bgColor: 'none' }}
+                  _active={{
+                    bgColor: 'none',
+                    borderColor: '#cea3ff',
+                    color: '#cea3ff',
+                  }}
+                  bg="none"
+                  rounded="full"
+                  borderColor="#edddff"
+                  borderWidth="2px"
+                  color="#edddff"
+                  fontSize="16px"
+                  h="48px"
+                  fontWeight={500}
+                >
+                  Sort by
+                </MenuButton>
+              ) : (
+                <MenuButton
+                  as={Button}
+                  _hover={{ bgColor: 'none' }}
+                  _active={{
+                    bgColor: 'none',
+                    borderColor: '#cea3ff',
+                    color: '#cea3ff',
+                  }}
+                  bg="none"
+                  rounded="full"
+                  borderColor="#edddff"
+                  borderWidth="2px"
+                  color="#edddff"
+                  fontSize="16px"
+                  p={3}
+                  h="48px"
+                  fontWeight={500}
+                >
+                  <SortIconMobile />
+                </MenuButton>
+              )}
+
+              <MenuList bg="#030007" borderColor="#3D3A41">
+                <MenuItem bg="#030007" color="#b2afb6">
+                  Recently Added
+                </MenuItem>
+                <MenuItem bg="#030007" color="#b2afb6">
+                  Most Popular
+                </MenuItem>
+                <MenuItem bg="#030007" color="#b2afb6">
+                  A {'->'} Z
+                </MenuItem>
+              </MenuList>
             </Menu>
           </div>
         </div>
         {/* categories */}
-        <div className="mt-10 flex">
-          <CategoryCard name="All" />
-        </div>
-        <div className="flex flex-wrap justify-between">
-          <Project
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-            tags={['DEX', 'Solana']}
-            isSuperteam={true}
-          />
-          <Project
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-            tags={['DEX', 'Solana']}
-            isSuperteam={true}
-          />
-          <Project
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-            tags={['DEX', 'Solana']}
-            isSuperteam={true}
-          />
-          <Project
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-            tags={['DEX', 'Solana']}
-            isSuperteam={true}
+        <div className="relative my-10 flex flex-nowrap overflow-hidden text-white">
+          <div className="categories flex w-fit flex-nowrap gap-2 whitespace-nowrap">
+            {categories.map((category, i) => {
+              return <CategoryCard key={i} name={category} />;
+            })}
+            <div className="ml-24" />
+          </div>
+          <Box
+            bg="linear-gradient(270deg, #030007 0%, rgba(3, 0, 7, 0) 100%)"
+            w={24}
+            h="full"
+            right="0"
+            position="absolute"
           />
         </div>
-        <div className="mx-auto cursor-pointer select-none">
-          <p className="mb-2 text-center text-sm font-semibold tracking-[0.2em] text-white">
+        <div className="flex flex-wrap justify-center gap-12">
+          <Project
+            logo="/cubik.png"
+            cover="/cubik-cover.png"
+            name="Cubik"
+            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
+            tags={['DEX', 'Solana']}
+            isSuperteam={true}
+          />
+          <Project
+            logo="/cubik.png"
+            cover="/cubik-cover.png"
+            name="Cubik"
+            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
+            tags={['DEX', 'Solana']}
+            isSuperteam={true}
+          />
+          <Project
+            logo="/cubik.png"
+            cover="/cubik-cover.png"
+            name="Cubik"
+            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
+            tags={['DEX', 'Solana']}
+            isSuperteam={true}
+          />
+          <Project
+            logo="/cubik.png"
+            cover="/cubik-cover.png"
+            name="Cubik"
+            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
+            tags={['DEX', 'Solana']}
+            isSuperteam={true}
+          />
+        </div>
+        <div className="mx-auto cursor-pointer">
+          <p
+            onClick={() => {
+              setShowProjects(showProjects + 5);
+            }}
+            className="mb-2 mt-4 select-none text-center text-sm font-semibold tracking-[0.2em] text-white md:mt-8"
+          >
             SHOW MORE
           </p>
           <ChevronDown />
         </div>
 
         <div className="mt-36 rounded-3xl bg-gradient p-10">
-          <h1 className="text-6xl font-bold text-white">Learn, Build, Earn</h1>
-          <h1 className="mt-4 text-2xl font-semibold text-primary-800">
+          <h1 className="text-3xl font-bold text-white md:text-6xl">
+            Learn, Build, Earn
+          </h1>
+          <h1 className="mt-4 text-xl font-semibold text-primary-800 md:text-2xl">
             (Coming soon)
           </h1>
         </div>
         {/* community */}
-        <div className="flex items-center justify-between py-32">
-          <div className="w-1/2 pr-20">
-            <p className="text-4xl font-bold text-white">
+        <div className="flex flex-col items-center justify-between py-32 md:flex-row">
+          <div className="md:w-1/2 md:pr-20">
+            <p className="text-3xl font-bold text-white md:text-4xl">
               Become part of a flourishing community!
             </p>
             <p className="mt-5 text-lg text-[#99969d]">
@@ -261,8 +326,12 @@ export default function Home() {
             </p>
           </div>
 
-          <Flex className="mx-auto w-1/2" justifyContent="space-around">
-            <Flex flexDir="column" gap="16px">
+          <Flex
+            className="md:mx-auto md:w-1/2"
+            justifyContent="space-around"
+            mt={{ base: 10, md: 0 }}
+          >
+            <Flex flexDir="column" gap="16px" mx={4}>
               <Flex>
                 <Twitter />
                 <p className="ml-3 text-lg font-semibold text-white">Twitter</p>
@@ -279,7 +348,7 @@ export default function Home() {
               </Flex>
             </Flex>
 
-            <Flex flexDir="column" gap="16px">
+            <Flex flexDir="column" gap="16px" mx={4}>
               <Flex>
                 <Reddit />
                 <p className="ml-3 text-lg font-semibold text-white">Reddit</p>
