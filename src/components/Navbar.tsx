@@ -30,8 +30,8 @@ export default function Navbar() {
 
   return (
     <Center>
-      <div className="fixed top-6 z-20 mx-auto w-[94%] max-w-[1128px] rounded-full bg-black/[0.72] px-8 shadow-md backdrop-blur-2xl">
-        <div className="mx-auto flex justify-between py-5">
+      <div className="fixed top-4 z-20 mx-auto w-[94%] max-w-[1128px] rounded-full bg-black/[0.72] px-8 shadow-md backdrop-blur-2xl md:top-6">
+        <div className="mx-auto flex justify-between py-3 md:py-5">
           <div onClick={() => router.push('/')} className="cursor-pointer">
             <Logo />
           </div>

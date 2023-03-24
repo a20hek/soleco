@@ -40,6 +40,8 @@ import {
   Project,
 } from '@/components/ProjectCard';
 
+import Spline from '@splinetool/react-spline';
+
 export default function Home() {
   const [showProjects, setShowProjects] = useState<number>(9);
   const [isLargerthan668] = useMediaQuery('(min-width: 668px)');
@@ -47,8 +49,13 @@ export default function Home() {
   const CategoryCard = ({ name }: { name: string }) => {
     const [selected, setSelected] = useState<boolean>(false);
     return (
-      <div className="cursor-pointer select-none rounded-full border border-[#3d3a41] px-7 py-3">
-        <p className="font-semibold text-white">{name}</p>
+      <div
+        onClick={() => setSelected((value) => !value)}
+        className={`${
+          selected ? 'border-primary-500 bg-primary-300' : 'border-[#3d3a41]'
+        } cursor-pointer  rounded-full border px-7 py-3 transition-colors duration-150 ease-in-out`}
+      >
+        <p className="select-none font-semibold text-white">{name}</p>
       </div>
     );
   };
@@ -62,61 +69,84 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <Box
-        bg="url('/bg-hero.png')"
-        h="100vh"
-        bgRepeat="no-repeat"
-        bgSize="cover"
-        bgPosition="center"
-        position="relative"
-      >
-        <div className="mx-auto w-[90%] max-w-[1128px] px-8 pt-40 md:px-36">
-          <h1 className="text-center text-5xl font-semibold text-white md:text-7xl">
-            Discover the Hottest Projects Built on Solana
-          </h1>
-        </div>
-        {/* <Image src="/globe.png" className="h-1/2 w-full" /> */}
-        <div className="mt-6 flex flex-col justify-center gap-4 md:flex-row">
-          <Button
-            color="#440092"
-            bg="white"
-            rounded="full"
-            size="lg"
-            px={12}
-            h={14}
-            mx={{ base: 'auto', md: '0px' }}
-            w={{ base: '60%', md: 'auto' }}
-            onClick={() => router.push('/submit')}
-          >
-            Submit a Project
-          </Button>
-          <Button
-            variant="outline"
-            borderWidth="2px"
-            rounded="full"
-            color="white"
-            _hover={{ bg: 'none', borderColor: '#995AE0' }}
-            _active={{ bg: 'none', borderColor: '#CEA3FF', color: '#CEA3FF' }}
-            size="lg"
-            mx={{ base: 'auto', md: '0px' }}
-            w={{ base: '60%', md: 'auto' }}
-            px={12}
-            h={14}
-            onClick={() => router.push('/#projects')}
-          >
-            Explore Projects
-          </Button>
-        </div>
-        {/* <Image src="/globe.png" className="mx-auto mt-auto mb-0" /> */}
+      <div>
+        {/* <div className="h-screen"> */}
         <Box
-          position="absolute"
-          bottom="0"
-          bg="linear-gradient(180deg, rgba(3, 0, 7, 0) 0%, #030007 100%)"
-          w="100%"
-          h="30vh"
-        />
-      </Box>
+          bg="url('/bg-hero.png')"
+          h={isLargerthan668 ? 'auto' : '100vh'}
+          bgRepeat="no-repeat"
+          bgSize="cover"
+          bgPosition="center"
+          position="relative"
+        >
+          <div className="mx-auto w-[90%] max-w-[1128px] px-8 pt-40 md:px-36">
+            <h1 className="text-center text-5xl font-semibold text-white md:text-7xl">
+              Discover the Hottest Projects Built on Solana
+            </h1>
+          </div>
+          {/* <Image src="/globe.png" className="h-1/2 w-full" /> */}
+          <div className="mt-6 flex flex-col justify-center gap-4 md:flex-row">
+            <Button
+              color="#440092"
+              bg="white"
+              rounded="full"
+              size="lg"
+              px={12}
+              h={14}
+              mx={{ base: 'auto', md: '0px' }}
+              w={{ base: '60%', md: 'auto' }}
+              onClick={() => router.push('/submit')}
+            >
+              Submit a Project
+            </Button>
+            <Button
+              variant="outline"
+              borderWidth="2px"
+              rounded="full"
+              color="white"
+              _hover={{ bg: 'none', borderColor: '#995AE0' }}
+              _active={{
+                bg: 'none',
+                borderColor: '#CEA3FF',
+                color: '#CEA3FF',
+              }}
+              size="lg"
+              mx={{ base: 'auto', md: '0px' }}
+              w={{ base: '60%', md: 'auto' }}
+              px={12}
+              h={14}
+              onClick={() => router.push('/#projects')}
+            >
+              Explore Projects
+            </Button>
+          </div>
+          {
+            isLargerthan668 ? (
+              <Spline
+                scene="https://prod.spline.design/7cURyV575C6gPenr/scene.splinecode"
+                // style={{ position: 'absolute', bottom: 0, height: '600px' }}
+                style={{
+                  height: '500px',
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                }}
+              />
+            ) : null
+            // <div className="absolute inset-x-0 bottom-0 mx-0 h-[60vh]">
+            //   <Spline scene="https://prod.spline.design/WWzUIC5QmE1ufvus/scene.splinecode" />
+            // </div>
+          }
+
+          <Box
+            position="absolute"
+            bottom="0"
+            bg="linear-gradient(180deg, rgba(3, 0, 7, 0) 0%, #030007 100%)"
+            w="100%"
+            h="30vh"
+          />
+        </Box>
+      </div>
+
       <div className="mx-auto w-[90%] max-w-[1128px]">
         {/* projects */}
 
@@ -181,6 +211,7 @@ export default function Home() {
                 _hover={{ bgColor: '#141316' }}
                 _placeholder={{ color: '#77747B' }}
                 mr={4}
+                w={{ base: '94%', md: '100%' }}
               />
             </InputGroup>
             <Menu>
@@ -223,6 +254,7 @@ export default function Home() {
                   fontSize="16px"
                   p={3}
                   h="48px"
+                  flexShrink={0}
                   fontWeight={500}
                 >
                   <SortIconMobile />
@@ -364,6 +396,7 @@ export default function Home() {
             </Flex>
           </Flex>
         </div>
+        {/* </div> */}
       </div>
     </div>
   );

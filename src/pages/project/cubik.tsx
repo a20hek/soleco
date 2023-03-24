@@ -6,22 +6,22 @@ import LinkArrow from '@/dynamic/LinkArrow';
 export default function Project() {
   return (
     <div>
-      <div className="mx-auto w-[94%] max-w-[1128px] py-44">
-        <div className="flex justify-between">
-          <div className="flex items-center gap-5">
+      <div className="mx-auto w-[90%] max-w-[1128px] py-28 md:py-44">
+        <div className="flex flex-col justify-between md:flex-row">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center">
             <Image
               src="/cubik.png"
               alt="/"
               className="h-24 w-24 rounded-full"
             />
             <div>
-              <div className="mt-2 text-2xl font-semibold text-white">
+              <div className="text-2xl font-semibold text-white md:mt-2">
                 Cubik
               </div>
               <div className="mt-1 text-neutral-300">
                 Revolutionary Secure Messaging & Trading Dapp powered by Solana
               </div>
-              <div className="mt-4 flex gap-4">
+              <div className="my-6 flex gap-4 md:mb-0 md:mt-4">
                 <Discord />
                 <Twitter />
                 <Telegram />
@@ -75,22 +75,22 @@ export default function Project() {
           <div className="custom-scrollbar mt-4 flex flex-nowrap overflow-x-scroll text-white">
             <div className="flex flex-nowrap gap-4 whitespace-nowrap">
               <Image
-                src="cubik-cover.png"
+                src="/cubik-cover.png"
                 alt="/"
                 className="mb-6 h-72 w-[28rem] rounded object-cover"
               />
               <Image
-                src="cubik-cover.png"
+                src="/cubik-cover.png"
                 alt="/"
                 className="mb-6 h-72 w-[28rem] rounded object-cover"
               />
               <Image
-                src="cubik-cover.png"
+                src="/cubik-cover.png"
                 alt="/"
                 className="mb-6 h-72 w-[28rem] rounded object-cover"
               />
               <Image
-                src="cubik-cover.png"
+                src="/cubik-cover.png"
                 alt="/"
                 className="mb-6 h-72 w-[28rem] rounded object-cover"
               />
