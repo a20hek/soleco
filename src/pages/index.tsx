@@ -2,11 +2,7 @@ import Head from 'next/head';
 import {
   Box,
   Button,
-  Center,
-  Divider,
   Flex,
-  Heading,
-  Image,
   Input,
   InputGroup,
   InputLeftElement,
@@ -19,7 +15,6 @@ import {
 import SearchIcon from '@/dynamic/SearchIcon';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import NextImage from 'next/image';
 import {
   Twitter,
   Discord,
@@ -28,7 +23,6 @@ import {
   Youtube,
   Telegram,
 } from '@/dynamic/socials';
-import ST from '@/dynamic/ST';
 import ChevronDown from '@/dynamic/chevrondown';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { SortIcon, SortIconMobile } from '@/dynamic/sorticon';
@@ -38,7 +32,7 @@ import {
   TrendingSubProject,
   TrendingTopProject,
   Project,
-} from '@/components/ProjectCard';
+} from '@/components/Project';
 
 import Spline from '@splinetool/react-spline';
 
@@ -70,7 +64,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        {/* <div className="h-screen"> */}
         <Box
           bg="url('/bg-hero.png')"
           h={isLargerthan668 ? 'auto' : '100vh'}
@@ -96,6 +89,8 @@ export default function Home() {
               mx={{ base: 'auto', md: '0px' }}
               w={{ base: '60%', md: 'auto' }}
               onClick={() => router.push('/submit')}
+              _hover={{ bg: '#edddff', color: '#651db8' }}
+              _active={{ color: '#995aeo' }}
             >
               Submit a Project
             </Button>
@@ -124,7 +119,6 @@ export default function Home() {
             isLargerthan668 ? (
               <Spline
                 scene="https://prod.spline.design/7cURyV575C6gPenr/scene.splinecode"
-                // style={{ position: 'absolute', bottom: 0, height: '600px' }}
                 style={{
                   height: '500px',
                   marginRight: 'auto',

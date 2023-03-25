@@ -36,6 +36,12 @@ export default function Project() {
             py={4}
             px={16}
             size="lg"
+            _hover={{
+              borderColor:
+                'linear-gradient(315deg, #22093F 0%, #611CB8 33.85%, #A94EE4 77.08%, #DE78F8 100%)',
+              bg: 'transparent',
+              borderWidth: '2px',
+            }}
             rightIcon={<LinkArrow />}
             bg="linear-gradient(315deg, #22093F 0%, #611CB8 33.85%, #A94EE4 77.08%, #DE78F8 100%)"
           >

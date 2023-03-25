@@ -1,15 +1,16 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Layout/Navbar';
 import { Inter, Inter_Tight } from '@next/font/google';
-import { theme } from '@/config/chakra.config';
+import { theme } from 'config/chakra.config';
 import { Analytics } from '@vercel/analytics/react';
-import Footer from '@/components/Footer';
+import Footer from '@/components/Layout/Footer';
 
 const interTight = Inter_Tight({
   subsets: ['latin'],
   variable: '--font-inter-tight',
+  display: 'swap',
 });
 
 export default function App({ Component, pageProps }: AppProps) {

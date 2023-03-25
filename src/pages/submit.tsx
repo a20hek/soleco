@@ -1,18 +1,12 @@
-import React, {
-  ChangeEvent,
-  MutableRefObject,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEvent, MutableRefObject, useRef, useState } from 'react';
 import {
   FormControl,
-  Input,
   FormLabel,
   Textarea,
-  InputGroup,
-  InputLeftElement,
   useMediaQuery,
+  RadioGroup,
+  Radio,
+  Stack,
 } from '@chakra-ui/react';
 import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import {
@@ -23,6 +17,8 @@ import {
 import SearchIcon from '@/dynamic/SearchIcon';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
+import MultiSelect from '@/components/MultiSelect';
+import { FormElement } from '@/components/FormElement';
 
 const sections = [
   {
@@ -38,44 +34,6 @@ const sections = [
     title: 'Socials',
   },
 ];
-
-function FormElement({
-  label,
-  placeholder,
-  maxLength,
-  htmlFor,
-  type,
-  ...props
-}: any) {
-  const [char, setChar] = useState<number>(0);
-  return (
-    <FormControl marginTop={10}>
-      <div className="flex items-baseline justify-between">
-        <FormLabel htmlFor={htmlFor} color="#d4d1d8" fontWeight={400}>
-          {label}
-        </FormLabel>
-        {maxLength && (
-          <p className="text-sm text-[#b7b4bb]">
-            {char} / {maxLength}
-          </p>
-        )}
-      </div>
-      <Input
-        type={type}
-        id="name"
-        placeholder={placeholder}
-        variant="filled"
-        bg="#120f16"
-        _hover={{ bg: '#141118' }}
-        _placeholder={{ color: '#7b787f' }}
-        h="44px"
-        maxLength={maxLength}
-        {...props}
-        onChange={(e) => setChar(e.target.value.length)}
-      />
-    </FormControl>
-  );
-}
 
 export default function Submit() {
   const [descCharCount, setDescCharCount] = useState<number>(0);
@@ -93,8 +51,33 @@ export default function Submit() {
     screenshotUpload.current.click();
   };
 
-  const [selectedLogo, setselectedLogo] = useState<File | null>(null);
+  const [selectedLogo, setselectedLogo] = useState<File[]>([]);
   const [selectedScreenshots, setselectedScreenshots] = useState<File[]>([]);
+
+  const handleLogoSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      setselectedLogo(filesArray);
+    }
+  };
+
+  const previewLogo = selectedLogo.map((image) => {
+    const url = URL.createObjectURL(image);
+    return (
+      <div
+        key={image.name}
+        className="h-16 w-16 rounded-2xl outline-dashed outline-2 outline-primary-800"
+      >
+        <Image
+          src={url}
+          alt={image.name}
+          className="h-16 w-16 rounded-2xl object-cover"
+          height={16}
+          width={16}
+        />
+      </div>
+    );
+  });
 
   const handleScreenshotSelect = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -147,9 +130,7 @@ export default function Submit() {
               <div
                 key={i}
                 className={`${
-                  formStage > i + 1
-                    ? 'bg-gradient'
-                    : 'border-2 sm:bg-primary-800'
+                  formStage > i + 1 ? 'bg-gradient' : 'border sm:bg-primary-800'
                 } mt-12 rounded-[60px] border-primary-800 sm:w-1/4 `}
               >
                 <div className="mx-auto mt-[1px] flex h-[calc(100%_-_2px)] w-[calc(100%_-_2px)] items-center rounded-[60px] p-3 sm:bg-[#030007]">
@@ -254,9 +235,7 @@ export default function Submit() {
             </p>
 
             <div className="mt-5 flex items-center">
-              {/* {selectedLogo ? previewLogo :  */}
-              <ProjectUploadIcon />
-              {/* } */}
+              {selectedLogo ? previewLogo : <ProjectUploadIcon />}
               <div className="ml-5">
                 <button
                   className="flex items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
@@ -278,7 +257,7 @@ export default function Submit() {
                 style={{ display: 'none' }}
                 ref={logoUpload}
                 accept="image/png, image/jpeg, image/jpg, image/webp"
-                // onChange={handleLogoSelect}
+                onChange={handleLogoSelect}
               />
             </div>
 
@@ -348,26 +327,30 @@ export default function Submit() {
               Select a project category
             </h1>
             <p className="mt-1 text-neutral-400">Select up to 3 categories</p>
-            <InputGroup mt={5}>
-              <InputLeftElement pointerEvents="none" h="54px" w="54px">
-                <SearchIcon />
-              </InputLeftElement>
+            <MultiSelect />
 
-              <Input
-                id="Search for a category"
-                placeholder="Search category..."
-                variant="filled"
-                bg="#120f16"
-                _hover={{ bg: '#141118' }}
-                _placeholder={{ color: '#7b787f', fontSize: '16px' }}
-                rounded="full"
-                h="54px"
-              />
-            </InputGroup>
             <h1 className="mt-16 text-2xl font-semibold">Project Status</h1>
             <p className="mt-1 text-neutral-400">
               How far along is the project?
             </p>
+            <RadioGroup>
+              <Stack direction="row" mt={5} gap={4}>
+                <Radio
+                  colorScheme="purple"
+                  value="Live"
+                  {...register('status')}
+                >
+                  Live on Mainnet, Devnet, or Testnet
+                </Radio>
+                <Radio
+                  colorScheme="purple"
+                  value="Building"
+                  {...register('status')}
+                >
+                  Building
+                </Radio>
+              </Stack>
+            </RadioGroup>
             <div className="mt-10 flex items-center justify-between">
               <button
                 className="flex items-center"
