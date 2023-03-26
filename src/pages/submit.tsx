@@ -18,6 +18,7 @@ import { useForm, Controller } from 'react-hook-form';
 import Image from 'next/image';
 import MultiSelect from '@/components/MultiSelect';
 import { FormElement } from '@/components/FormElement';
+import { supabase } from '@/lib/supabase';
 
 const sections = [
   {
@@ -57,9 +58,42 @@ export default function Submit() {
     window.scrollTo(0, 0);
   };
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    console.log(data.logo);
+  const onSubmit = async (formData: any) => {
+    const name = formData.name;
+
+    const { error } = await supabase.storage
+      .from('project-logos')
+      .upload(name, formData.logo[0]);
+
+    const { data: logoUrlData } = await supabase.storage
+      .from('project-logos')
+      .getPublicUrl(name);
+    const logoUrl = logoUrlData.publicUrl;
+
+    const screenshotUrls = [];
+    for (const file of formData.screenshots) {
+      const { error } = await supabase.storage
+        .from('project-screenshots')
+        .upload(name + file.name, file);
+      const { data: screenshotUrlData } = await supabase.storage
+        .from('project-screenshots')
+        .getPublicUrl(file.name);
+      screenshotUrls.push(screenshotUrlData.publicUrl);
+    }
+
+    const { data } = await supabase.from('projects').insert({
+      name: formData.name,
+      tagline: formData.tagline,
+      website: formData.website,
+      description: formData.description,
+      logo: logoUrl as string,
+      screenshots: screenshotUrls,
+      categories: formData.categories,
+      status: formData.status,
+      twitter: formData.twitter,
+      discord: formData.discord,
+      telegram: formData.telegram,
+    });
   };
 
   const watchLogo = watch('logo');
