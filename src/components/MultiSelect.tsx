@@ -5,30 +5,17 @@ export default function MultiSelect({
   onChange,
   options,
   value,
+  ref,
   maxLength = 3,
 }: any) {
-  // const [selectedOptions, setSelectedOptions] = useState<any>([]);
-
-  // const handleSelectChange = (newValue) => {
-  //   if (selectedOptions.length < 3) {
-  //     setSelectedOptions(newValue);
-  //     if (onChange) {
-  //       onChange(newValue);
-  //     }
-  //   }
-  // };
-  // console.log('options', options);
   return (
     <Select
-      value={value}
+      ref={ref}
+      value={options.filter((c: any) => value.includes(c.value))}
+      onChange={(val) => onChange(val.map((c) => c.value))}
       isMulti
       options={options}
-      onChange={onChange}
       isOptionDisabled={(option) => value.length >= maxLength}
-      // inputRef={inputRef}
-      // value={selectedOptions}
-      // onChange={handleSelectChange}
-      // isOptionDisabled={() => selectedOptions.length >= 3}
       styles={{
         option: (styles, { isDisabled }) => ({
           ...styles,

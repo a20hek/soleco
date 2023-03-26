@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -44,7 +44,7 @@ const options = [
 export default function Submit() {
   const [descCharCount, setDescCharCount] = useState<number>(0);
   const [formStage, setFormStage] = useState<number>(1);
-  const { register, handleSubmit, control } = useForm();
+  const { register, handleSubmit, control, watch } = useForm();
   const [isLargerthan640] = useMediaQuery('(min-width: 640px)');
 
   const handlePrevClick = () => {
@@ -57,62 +57,38 @@ export default function Submit() {
     window.scrollTo(0, 0);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log(data);
+    console.log(data.logo);
   };
 
-  const [selectedLogo, setselectedLogo] = useState<File[]>([]);
-  const [selectedScreenshots, setselectedScreenshots] = useState<File[]>([]);
+  const watchLogo = watch('logo');
+  let logoPreview = '';
+  if (watchLogo && watchLogo[0]) {
+    logoPreview = URL.createObjectURL(watchLogo[0]);
+  }
 
-  const handleLogoSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files);
-      setselectedLogo(filesArray);
-    }
-  };
+  const watchScreenshots = watch('screenshots') as FileList | undefined;
 
-  const previewLogo = selectedLogo.map((image) => {
-    const url = URL.createObjectURL(image);
-    return (
-      <div
-        key={image.name}
-        className="h-16 w-16 rounded-2xl outline-dashed outline-2 outline-primary-800"
-      >
-        <Image
-          src={url}
-          alt={image.name}
-          className="h-16 w-16 rounded-2xl object-cover"
-          height={16}
-          width={16}
-        />
-      </div>
-    );
-  });
-
-  const handleScreenshotSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files);
-      setselectedScreenshots(filesArray);
-    }
-  };
-
-  const previewScreenshots = selectedScreenshots.map((image) => {
-    const url = URL.createObjectURL(image);
-    return (
-      <div
-        key={image.name}
-        className="mt-4 h-16 w-16 rounded-2xl  outline-dashed outline-2 outline-[#7b787f]"
-      >
-        <Image
-          src={url}
-          alt={image.name}
-          className="h-16 w-16 rounded-2xl object-cover"
-          height={16}
-          width={16}
-        />
-      </div>
-    );
-  });
+  const previewScreenshots = watchScreenshots
+    ? Object.values(watchScreenshots).map((image) => {
+        const url = URL.createObjectURL(image);
+        return (
+          <div
+            key={image.name}
+            className="mt-4 h-16 w-16 rounded-2xl outline-dashed outline-2 outline-[#7b787f]"
+          >
+            <Image
+              src={url}
+              alt={image.name}
+              className="h-16 w-16 rounded-2xl object-cover"
+              height={16}
+              width={16}
+            />
+          </div>
+        );
+      })
+    : null;
 
   return (
     <>
@@ -248,12 +224,23 @@ export default function Submit() {
             </p>
 
             <div className="mt-5 flex items-center">
-              {selectedLogo.length > 0 ? previewLogo : <ProjectUploadIcon />}
+              {logoPreview ? (
+                <div className="h-16 w-16 rounded-2xl outline-dashed outline-2 outline-primary-800">
+                  <Image
+                    src={logoPreview}
+                    alt="logo"
+                    className="h-16 w-16 rounded-2xl object-cover"
+                    height={16}
+                    width={16}
+                  />
+                </div>
+              ) : (
+                <ProjectUploadIcon />
+              )}
               <div className="ml-5">
                 <label
                   htmlFor="logo"
                   className="flex w-fit items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
-                  // onClick={() => handleLogoUpload()}
                 >
                   Upload your project logo
                 </label>
@@ -265,11 +252,10 @@ export default function Submit() {
               <input
                 id="logo"
                 type="file"
-                accept="image/png, image/jpeg, image/jpg, image/webp"
+                accept="image/*"
                 style={{ display: 'none' }}
                 {...register('logo')}
                 name="logo"
-                onChange={handleLogoSelect}
               />
             </div>
 
@@ -300,7 +286,6 @@ export default function Submit() {
                 style={{ display: 'none' }}
                 accept="image/png, image/jpeg, image/jpg, image/webp"
                 multiple
-                onChange={handleScreenshotSelect}
               />
             </div>
 
@@ -339,7 +324,7 @@ export default function Submit() {
               control={control}
               defaultValue={[]}
               name="categories"
-              render={({ field: { onChange, value } }) => {
+              render={({ field: { onChange, value, ref } }) => {
                 console.log('value', value);
                 return (
                   <MultiSelect
