@@ -1,5 +1,5 @@
-import Logo from '@/dynamic/logo';
-import { Discord, Github, Twitter, Youtube } from '@/dynamic/socials';
+import Logo from '@/svgs/logo';
+import { Discord, Github, Twitter, Youtube } from '@/svgs/socials';
 import { Divider } from '@chakra-ui/react';
 import React from 'react';
 

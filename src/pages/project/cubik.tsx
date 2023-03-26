@@ -1,7 +1,7 @@
 import { Button, Image } from '@chakra-ui/react';
 import React from 'react';
-import { Discord, Twitter, Telegram } from '@/dynamic/socials';
-import LinkArrow from '@/dynamic/LinkArrow';
+import { Discord, Twitter, Telegram } from '@/svgs/socials';
+import LinkArrow from '@/svgs/LinkArrow';
 
 export default function Project() {
   return (

@@ -1,25 +1,38 @@
 import Select from 'react-select';
 import React, { useState } from 'react';
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
+export default function MultiSelect({
+  onChange,
+  options,
+  value,
+  maxLength = 3,
+}: any) {
+  // const [selectedOptions, setSelectedOptions] = useState<any>([]);
 
-export default function MultiSelect() {
-  const [selectedOptions, setSelectedOptions] = useState<any>([]);
-
+  // const handleSelectChange = (newValue) => {
+  //   if (selectedOptions.length < 3) {
+  //     setSelectedOptions(newValue);
+  //     if (onChange) {
+  //       onChange(newValue);
+  //     }
+  //   }
+  // };
+  // console.log('options', options);
   return (
     <Select
+      value={value}
       isMulti
       options={options}
-      onChange={(value) => setSelectedOptions(value)}
-      isOptionDisabled={() => selectedOptions.length >= 3}
+      onChange={onChange}
+      isOptionDisabled={(option) => value.length >= maxLength}
+      // inputRef={inputRef}
+      // value={selectedOptions}
+      // onChange={handleSelectChange}
+      // isOptionDisabled={() => selectedOptions.length >= 3}
       styles={{
-        option: (styles) => ({
+        option: (styles, { isDisabled }) => ({
           ...styles,
-          color: 'black',
+          color: isDisabled ? '#737373' : 'black',
           backgroundColor: '#edddff',
         }),
         input: (styles) => ({
@@ -28,7 +41,6 @@ export default function MultiSelect() {
         }),
         control: (styles) => ({
           ...styles,
-          color: '#fff',
           backgroundColor: '#120f16',
           border: 'none',
           borderRadius: '10px',

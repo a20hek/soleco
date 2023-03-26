@@ -12,7 +12,7 @@ import {
   MenuList,
   useMediaQuery,
 } from '@chakra-ui/react';
-import SearchIcon from '@/dynamic/SearchIcon';
+import SearchIcon from '@/svgs/SearchIcon';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
@@ -22,10 +22,10 @@ import {
   Reddit,
   Youtube,
   Telegram,
-} from '@/dynamic/socials';
-import ChevronDown from '@/dynamic/chevrondown';
+} from '@/svgs/socials';
+import ChevronDown from '@/svgs/chevrondown';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { SortIcon, SortIconMobile } from '@/dynamic/sorticon';
+import { SortIcon, SortIconMobile } from '@/svgs/sorticon';
 import { categories } from 'constants/categories';
 
 import {
@@ -34,7 +34,8 @@ import {
   Project,
 } from '@/components/Project';
 
-import Spline from '@splinetool/react-spline';
+// import Spline from '@splinetool/react-spline';
+import SplineAnimation from '@/components/SplineAnimation';
 
 export default function Home() {
   const [showProjects, setShowProjects] = useState<number>(9);
@@ -115,22 +116,7 @@ export default function Home() {
               Explore Projects
             </Button>
           </div>
-          {
-            isLargerthan668 ? (
-              <Spline
-                scene="https://prod.spline.design/7cURyV575C6gPenr/scene.splinecode"
-                style={{
-                  height: '500px',
-                  marginRight: 'auto',
-                  marginLeft: 'auto',
-                }}
-              />
-            ) : null
-            // <div className="absolute inset-x-0 bottom-0 mx-0 h-[60vh]">
-            //   <Spline scene="https://prod.spline.design/WWzUIC5QmE1ufvus/scene.splinecode" />
-            // </div>
-          }
-
+          <SplineAnimation />
           <Box
             position="absolute"
             bottom="0"
@@ -142,8 +128,6 @@ export default function Home() {
       </div>
 
       <div className="mx-auto w-[90%] max-w-[1128px]">
-        {/* projects */}
-
         <h2 className="mt-10 text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl">
           Top Projects
         </h2>
@@ -390,7 +374,6 @@ export default function Home() {
             </Flex>
           </Flex>
         </div>
-        {/* </div> */}
       </div>
     </div>
   );

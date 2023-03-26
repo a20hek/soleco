@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MutableRefObject, useRef, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -13,9 +13,8 @@ import {
   CheckIcon,
   ProjectUploadIcon,
   ScreenshotUploadIcon,
-} from '@/dynamic/submit';
-import SearchIcon from '@/dynamic/SearchIcon';
-import { useForm } from 'react-hook-form';
+} from '@/svgs/submit';
+import { useForm, Controller } from 'react-hook-form';
 import Image from 'next/image';
 import MultiSelect from '@/components/MultiSelect';
 import { FormElement } from '@/components/FormElement';
@@ -35,20 +34,31 @@ const sections = [
   },
 ];
 
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' },
+  { value: 'butterscotch', label: 'Butterscotch' },
+];
+
 export default function Submit() {
   const [descCharCount, setDescCharCount] = useState<number>(0);
   const [formStage, setFormStage] = useState<number>(1);
-  const { register, handleSubmit } = useForm();
-  const logoUpload = useRef() as MutableRefObject<HTMLInputElement>;
-  const screenshotUpload = useRef() as MutableRefObject<HTMLInputElement>;
+  const { register, handleSubmit, control } = useForm();
   const [isLargerthan640] = useMediaQuery('(min-width: 640px)');
 
-  const handleLogoUpload = () => {
-    logoUpload.current.click();
+  const handlePrevClick = () => {
+    setFormStage((prev) => prev - 1);
+    window.scrollTo(0, 0);
   };
 
-  const handleScreenshotUpload = () => {
-    screenshotUpload.current.click();
+  const handleNextClick = () => {
+    setFormStage((prev) => prev + 1);
+    window.scrollTo(0, 0);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
   const [selectedLogo, setselectedLogo] = useState<File[]>([]);
@@ -174,21 +184,24 @@ export default function Submit() {
               placeholder="Project Name"
               maxLength={40}
               htmlFor="name"
-              {...register('name')}
+              name="name"
+              register={register}
             />
             <FormElement
               label="Tagline"
               placeholder="A one sentence description of the project"
               maxLength={260}
               htmlFor="tagline"
-              {...register('tagline')}
+              name="tagline"
+              register={register}
             />
             <FormElement
               label="Website Link"
               placeholder="https://example.com"
               type="url"
               htmlFor="website"
-              {...register('website')}
+              name="website"
+              register={register}
             />
 
             <FormControl marginTop={10}>
@@ -220,7 +233,7 @@ export default function Submit() {
             </FormControl>
             <button
               className=" mt-8 mr-0 ml-auto flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
-              onClick={() => setFormStage(2)}
+              onClick={handleNextClick}
             >
               <p className="text-sm font-semibold">NEXT STEP</p>
               <ArrowForwardIcon />
@@ -235,28 +248,27 @@ export default function Submit() {
             </p>
 
             <div className="mt-5 flex items-center">
-              {selectedLogo ? previewLogo : <ProjectUploadIcon />}
+              {selectedLogo.length > 0 ? previewLogo : <ProjectUploadIcon />}
               <div className="ml-5">
-                <button
-                  className="flex items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
-                  onClick={() => handleLogoUpload()}
+                <label
+                  htmlFor="logo"
+                  className="flex w-fit items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
+                  // onClick={() => handleLogoUpload()}
                 >
                   Upload your project logo
-                </button>
+                </label>
                 <p className="mt-2 text-sm text-[#7b787f]">
                   Image file must be max 160x160px / at an aspect ratio of —1:1,
                   max 5MB.
                 </p>
               </div>
               <input
-                {...register('logo')}
-                type="file"
-                name="logo"
                 id="logo"
-                max={3}
-                style={{ display: 'none' }}
-                ref={logoUpload}
+                type="file"
                 accept="image/png, image/jpeg, image/jpg, image/webp"
+                style={{ display: 'none' }}
+                {...register('logo')}
+                name="logo"
                 onChange={handleLogoSelect}
               />
             </div>
@@ -273,20 +285,19 @@ export default function Submit() {
                 Upload at least one image. 1270x760px or higher recommended,
                 max. 5MB each. The first image will be used as preview.
               </p>
-              <button
-                className="mt-4 flex items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
-                onClick={() => handleScreenshotUpload()}
+              <label
+                htmlFor="screenshots"
+                className="mt-4 flex w-fit items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
               >
                 Browse
-              </button>
+              </label>
               <input
                 {...register('screenshots')}
                 type="file"
-                name="screenshot"
-                id="screenshot"
+                name="screenshots"
+                id="screenshots"
                 max={3}
                 style={{ display: 'none' }}
-                ref={screenshotUpload}
                 accept="image/png, image/jpeg, image/jpg, image/webp"
                 multiple
                 onChange={handleScreenshotSelect}
@@ -295,24 +306,21 @@ export default function Submit() {
 
             <div className="mt-2 flex gap-5">
               {previewScreenshots}
-              <div
+              <label
+                htmlFor="screenshots"
                 className="mt-4 w-fit cursor-pointer rounded-2xl p-5 outline-dashed outline-2 outline-[#7b787f]"
-                onClick={handleScreenshotUpload}
               >
                 <AddIcon h={5} w={5} color="#7b787f" />
-              </div>
+              </label>
             </div>
             <div className="mt-10 flex items-center justify-between">
-              <button
-                className="flex items-center"
-                onClick={() => setFormStage(1)}
-              >
+              <button className="flex items-center" onClick={handlePrevClick}>
                 <ArrowBackIcon mr={1} color="#edddff" />
                 <p className="text-sm text-primary-800">GO BACK</p>
               </button>
               <button
                 className="flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
-                onClick={() => setFormStage(3)}
+                onClick={handleNextClick}
               >
                 <p className="text-sm font-semibold">NEXT STEP</p>
                 <ArrowForwardIcon />
@@ -327,7 +335,21 @@ export default function Submit() {
               Select a project category
             </h1>
             <p className="mt-1 text-neutral-400">Select up to 3 categories</p>
-            <MultiSelect />
+            <Controller
+              control={control}
+              defaultValue={[]}
+              name="categories"
+              render={({ field: { onChange, value } }) => {
+                console.log('value', value);
+                return (
+                  <MultiSelect
+                    value={value || []}
+                    onChange={onChange}
+                    options={options}
+                  />
+                );
+              }}
+            />
 
             <h1 className="mt-16 text-2xl font-semibold">Project Status</h1>
             <p className="mt-1 text-neutral-400">
@@ -352,16 +374,13 @@ export default function Submit() {
               </Stack>
             </RadioGroup>
             <div className="mt-10 flex items-center justify-between">
-              <button
-                className="flex items-center"
-                onClick={() => setFormStage(2)}
-              >
+              <button className="flex items-center" onClick={handlePrevClick}>
                 <ArrowBackIcon mr={1} color="#edddff" />
                 <p className="text-sm text-primary-800">GO BACK</p>
               </button>
               <button
                 className="flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
-                onClick={() => setFormStage(4)}
+                onClick={handleNextClick}
               >
                 <p className="text-sm font-semibold">NEXT STEP</p>
                 <ArrowForwardIcon />
@@ -376,33 +395,33 @@ export default function Submit() {
               placeholder="https://twitter.com/project"
               htmlFor="twitter"
               type="url"
-              {...register('twitter')}
+              name="twitter"
+              register={register}
             />
             <FormElement
               label="Discord"
               placeholder="https://discord.com/project"
               htmlFor="discord"
               type="url"
-              {...register('discord')}
+              name="discord"
+              register={register}
             />
             <FormElement
               label="Telegram"
               placeholder="https://telegram.com/project"
               htmlFor="telegram"
               type="url"
-              {...register('telegram')}
+              name="telegram"
+              register={register}
             />
             <div className="mt-10 flex items-center justify-between">
-              <button
-                className="flex items-center"
-                onClick={() => setFormStage(3)}
-              >
+              <button className="flex items-center" onClick={handlePrevClick}>
                 <ArrowBackIcon mr={1} color="#edddff" />
                 <p className="text-sm text-primary-800">GO BACK</p>
               </button>
               <button
                 className="flex items-center rounded-full bg-gradient py-3 px-6 transition-all duration-300 hover:bg-white hover:text-black active:bg-black active:text-white"
-                onClick={() => setFormStage(4)}
+                onClick={handleSubmit(onSubmit)}
               >
                 <p className="text-sm font-semibold">SUBMIT PROJECT</p>
               </button>

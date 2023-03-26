@@ -1,4 +1,4 @@
-import Logo from '@/dynamic/logo';
+import Logo from '@/svgs/logo';
 import {
   useDisclosure,
   MenuItem,

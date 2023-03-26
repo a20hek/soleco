@@ -3,14 +3,13 @@ import React from 'react';
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { useState } from 'react';
 
-export function FormElement({
+export function NewForm({
   label,
   placeholder,
   maxLength,
   htmlFor,
   type,
   register,
-  name,
   ...props
 }: any) {
   const [char, setChar] = useState<number>(0);
@@ -28,13 +27,14 @@ export function FormElement({
       </div>
       <Input
         type={type}
+        id="name"
         placeholder={placeholder}
         variant="filled"
         bg="#120f16"
         _hover={{ bg: '#141118' }}
         _placeholder={{ color: '#7b787f' }}
         h="44px"
-        {...register(name)}
+        {...register('name')}
         maxLength={maxLength}
         {...props}
         onChange={(e) => setChar(e.target.value.length)}

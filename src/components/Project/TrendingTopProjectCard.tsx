@@ -1,4 +1,4 @@
-import ST from '@/dynamic/ST';
+import ST from '@/svgs/ST';
 import { Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { ProjectType } from './ProjectInterface';
