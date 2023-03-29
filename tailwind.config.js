@@ -17,7 +17,7 @@ module.exports = {
           700: '#E4CCFF',
           800: '#EDDDFF',
         },
-        card: '#0D0B0F',
+        card: '#110F14',
         accents: '#DE78F8',
         input: '#100F12',
       },

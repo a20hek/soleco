@@ -19,21 +19,8 @@ import Image from 'next/image';
 import MultiSelect from '@/components/MultiSelect';
 import { FormElement } from '@/components/FormElement';
 import { supabase } from '@/lib/supabase';
-
-const sections = [
-  {
-    title: 'Description',
-  },
-  {
-    title: 'Media',
-  },
-  {
-    title: 'Category',
-  },
-  {
-    title: 'Socials',
-  },
-];
+import { sections } from 'constants/sections';
+import { useRouter } from 'next/router';
 
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -50,13 +37,21 @@ export default function Submit() {
 
   const handlePrevClick = () => {
     setFormStage((prev) => prev - 1);
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
   const handleNextClick = () => {
     setFormStage((prev) => prev + 1);
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
+
+  const router = useRouter();
 
   const onSubmit = async (formData: any) => {
     const name = formData.name;
@@ -94,6 +89,8 @@ export default function Submit() {
       discord: formData.discord,
       telegram: formData.telegram,
     });
+
+    router.push('/submit/thank-you');
   };
 
   const watchLogo = watch('logo');
@@ -151,7 +148,9 @@ export default function Submit() {
                 key={i}
                 className={`${
                   formStage > i + 1 ? 'bg-gradient' : 'border sm:bg-primary-800'
-                } mt-12 rounded-[60px] border-primary-800 sm:w-1/4 `}
+                } mt-12 rounded-[60px] border-primary-800 sm:w-1/4 ${
+                  formStage < i + 1 ? 'opacity-30' : ''
+                }`}
               >
                 <div className="mx-auto mt-[1px] flex h-[calc(100%_-_2px)] w-[calc(100%_-_2px)] items-center rounded-[60px] p-3 sm:bg-[#030007]">
                   <div
@@ -274,7 +273,7 @@ export default function Submit() {
               <div className="ml-5">
                 <label
                   htmlFor="logo"
-                  className="flex w-fit items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
+                  className="flex w-fit cursor-pointer items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
                 >
                   Upload your project logo
                 </label>
@@ -307,7 +306,7 @@ export default function Submit() {
               </p>
               <label
                 htmlFor="screenshots"
-                className="mt-4 flex w-fit items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
+                className="mt-4 flex w-fit cursor-pointer items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
               >
                 Browse
               </label>
