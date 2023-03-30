@@ -107,8 +107,8 @@ export default function Home() {
           position="relative"
         >
           <div className="mx-auto w-[90%] max-w-[1128px] px-8 pt-40 md:px-36">
-            <h1 className="text-center text-5xl font-semibold text-white md:text-7xl">
-              Discover the Hottest Projects Built on Solana
+            <h1 className="text-center text-5xl font-medium text-white md:text-7xl">
+              Explore the thriving Solana Ecosystem
             </h1>
           </div>
           {/* <Image src="/globe.png" className="h-1/2 w-full" /> */}
@@ -166,36 +166,35 @@ export default function Home() {
         </h2>
         <div className="flex flex-col justify-between md:flex-row">
           <TrendingTopProject
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            tagline="Cubik is a decentralized, non-custodial, and permissionless exchange f"
-            categories={['DEX', 'Solana']}
-            isSuperteam={true}
+            logo="/backpacklogo.jpg"
+            cover="/backpack.png"
+            name="Backpack"
+            tagline="The home for your xNFTs. "
+            isSuperteam={false}
+            link="/project/backpack"
           />
           <div>
             <TrendingSubProject
-              logo="/cubik.png"
+              logo="/gumlogo.jpg"
               cover="/cubik-cover.png"
-              name="Cubik"
-              tagline="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-              categories={['DEX', 'Solana']}
+              name="Gum"
+              tagline="Solana social legos to build sticky apps with ease"
               isSuperteam={true}
             />
             <TrendingSubProject
-              logo="/cubik.png"
+              logo="/candypaylogo.png"
               cover="/cubik-cover.png"
-              name="Cubik"
-              tagline="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-              categories={['DEX', 'Solana']}
+              name="CandyPay"
+              tagline="CandyPay is a no-code platform powering seamless, mobile native payment experiences on Solana!
+              "
               isSuperteam={true}
             />
             <TrendingSubProject
-              logo="/cubik.png"
+              logo="/rootlogo.png"
               cover="/cubik-cover.png"
-              name="Cubik"
-              tagline="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-              categories={['DEX', 'Solana']}
+              name="Root Protocol"
+              tagline="Traders can trade SOL, BTC, ETH or literally any SPL token with 1000x leverage. This new derivative primitive works without liquidations and does not depend on any oracle."
+              // categories={['DEX', 'Solana']}
               isSuperteam={true}
             />
           </div>
@@ -303,11 +302,13 @@ export default function Home() {
         <div className="flex flex-wrap justify-center gap-12">
           {searchedProjects.map((project, i) => (
             <Project
+              logo={project.logo}
               key={i}
               tagline={project.tagline}
               categories={project.categories}
               isSuperteam={project.isSuperteam}
               name={project.name}
+              slug={project.slug}
             />
           ))}
         </div>

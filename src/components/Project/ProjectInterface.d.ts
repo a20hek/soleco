@@ -5,4 +5,5 @@ export interface ProjectType {
   cover?: string;
   categories: string[];
   isSuperteam: boolean;
+  slug?: string;
 }

@@ -24,10 +24,10 @@ import { useRouter } from 'next/router';
 import { categories } from 'constants/categories';
 
 export default function Submit() {
-  const [descCharCount, setDescCharCount] = useState<number>(0);
   const [formStage, setFormStage] = useState<number>(1);
   const { register, handleSubmit, control, watch } = useForm();
   const [isLargerthan640] = useMediaQuery('(min-width: 640px)');
+  const [descCharCount, setDescCharCount] = useState<number>(0);
 
   const handlePrevClick = () => {
     setFormStage((prev) => prev - 1);
@@ -235,13 +235,6 @@ export default function Submit() {
                 onChange={(e) => setDescCharCount(e.target.value.length)}
               />
             </FormControl>
-            <button
-              className=" mt-8 mr-0 ml-auto flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
-              onClick={handleNextClick}
-            >
-              <p className="text-sm font-semibold">NEXT STEP</p>
-              <ArrowForwardIcon />
-            </button>
           </>
         )}
         {formStage == 2 && (
@@ -326,19 +319,6 @@ export default function Submit() {
                 <AddIcon h={5} w={5} color="#7b787f" />
               </label>
             </div>
-            <div className="mt-10 flex items-center justify-between">
-              <button className="flex items-center" onClick={handlePrevClick}>
-                <ArrowBackIcon mr={1} color="#edddff" />
-                <p className="text-sm text-primary-800">GO BACK</p>
-              </button>
-              <button
-                className="flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
-                onClick={handleNextClick}
-              >
-                <p className="text-sm font-semibold">NEXT STEP</p>
-                <ArrowForwardIcon />
-              </button>
-            </div>
           </>
         )}
 
@@ -386,19 +366,6 @@ export default function Submit() {
                 </Radio>
               </Stack>
             </RadioGroup>
-            <div className="mt-10 flex items-center justify-between">
-              <button className="flex items-center" onClick={handlePrevClick}>
-                <ArrowBackIcon mr={1} color="#edddff" />
-                <p className="text-sm text-primary-800">GO BACK</p>
-              </button>
-              <button
-                className="flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
-                onClick={handleNextClick}
-              >
-                <p className="text-sm font-semibold">NEXT STEP</p>
-                <ArrowForwardIcon />
-              </button>
-            </div>
           </>
         )}
         {formStage === 4 && (
@@ -427,20 +394,36 @@ export default function Submit() {
               name="telegram"
               register={register}
             />
-            <div className="mt-10 flex items-center justify-between">
-              <button className="flex items-center" onClick={handlePrevClick}>
-                <ArrowBackIcon mr={1} color="#edddff" />
-                <p className="text-sm text-primary-800">GO BACK</p>
-              </button>
-              <button
-                className="flex items-center rounded-full bg-gradient py-3 px-6 transition-all duration-300 hover:bg-white hover:text-black active:bg-black active:text-white"
-                onClick={handleSubmit(onSubmit)}
-              >
-                <p className="text-sm font-semibold">SUBMIT PROJECT</p>
-              </button>
-            </div>
           </>
         )}
+        <div
+          className={`mt-16 flex items-center ${
+            formStage > 1 ? 'justify-between' : 'justify-end'
+          }`}
+        >
+          {formStage > 1 && (
+            <button className="flex items-center" onClick={handlePrevClick}>
+              <ArrowBackIcon mr={1} color="#edddff" />
+              <p className="text-sm text-primary-800">GO BACK</p>
+            </button>
+          )}
+          {formStage < 4 ? (
+            <button
+              className="flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
+              onClick={handleNextClick}
+            >
+              <p className="text-sm font-semibold">NEXT STEP</p>
+              <ArrowForwardIcon />
+            </button>
+          ) : (
+            <button
+              className="flex items-center rounded-full bg-gradient py-3 px-6 transition-all duration-300 hover:bg-white hover:text-black active:bg-black active:text-white"
+              onClick={handleSubmit(onSubmit)}
+            >
+              <p className="text-sm font-semibold">SUBMIT PROJECT</p>
+            </button>
+          )}
+        </div>
       </div>
     </>
   );
