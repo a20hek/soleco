@@ -1,14 +1,15 @@
 import ST from '@/svgs/ST';
 import { Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import overflowText from 'utils/overflow';
 import { ProjectType } from './ProjectInterface';
 
 export const Project = ({
   name,
-  description,
+  tagline,
   logo,
   cover,
-  tags,
+  categories,
   isSuperteam,
 }: ProjectType) => {
   const router = useRouter();
@@ -36,19 +37,32 @@ export const Project = ({
           />
           <div className="flex items-center gap-2">
             {isSuperteam && <ST />}
-            {tags.map((tag, i) => (
+            {categories.slice(0, 3).map((category, i) => (
               <div
                 key={i}
-                className="h-fit rounded-md bg-neutral-900 py-1 px-3"
+                className="h-fit rounded-md bg-neutral-900 py-1 px-2"
               >
-                <p className="text-xs text-neutral-300">{tag}</p>
+                <p className="text-[0.65rem] text-neutral-300">
+                  {category === 'Tools & Infrastructure'
+                    ? 'Tools & Infra'
+                    : category === 'DAOs and Network States'
+                    ? 'DAO'
+                    : category}
+                </p>
               </div>
             ))}
+            {categories.length > 3 && (
+              <div className="h-fit rounded-md bg-neutral-900 p-1">
+                <p className="text-[0.5rem] text-neutral-300">
+                  +{categories.length - 3}
+                </p>
+              </div>
+            )}
           </div>
         </div>
         <div className="mt-2 text-xl font-semibold text-white">{name}</div>
         <div className="mt-2 h-0 text-neutral-300 transition-all duration-100 ease-in-out group-hover:opacity-100 group-hover:duration-500 md:opacity-0">
-          {description}
+          {overflowText(tagline, 108)}
         </div>
       </div>
     </div>

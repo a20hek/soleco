@@ -5,9 +5,9 @@ import { ProjectType } from './ProjectInterface';
 
 export const TrendingSubProject = ({
   name,
-  description,
+  tagline,
   logo,
-  tags,
+  categories,
 }: ProjectType) => {
   return (
     <div
@@ -24,7 +24,7 @@ export const TrendingSubProject = ({
           <div className="flex justify-between">
             <div className="text-xl font-semibold text-white">{name}</div>
             <div className="flex gap-2">
-              {tags.map((tag, i) => (
+              {categories.map((tag, i) => (
                 <div
                   key={i}
                   className="h-fit w-fit rounded-md bg-neutral-900 py-1 px-3"
@@ -34,7 +34,7 @@ export const TrendingSubProject = ({
               ))}
             </div>
           </div>
-          <div className="mt-1 text-neutral-300">{description}</div>
+          <div className="mt-1 text-neutral-300">{tagline}</div>
         </div>
       </div>
     </div>

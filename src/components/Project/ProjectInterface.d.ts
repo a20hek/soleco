@@ -1,8 +1,8 @@
 export interface ProjectType {
   name: string;
-  description: string;
-  logo: string;
-  cover: string;
-  tags: string[];
+  tagline: string;
+  logo?: string;
+  cover?: string;
+  categories: string[];
   isSuperteam: boolean;
 }

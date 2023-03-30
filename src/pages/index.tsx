@@ -6,10 +6,10 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  // Menu,
+  // MenuButton,
+  // MenuItem,
+  // MenuList,
   useMediaQuery,
 } from '@chakra-ui/react';
 import SearchIcon from '@/svgs/SearchIcon';
@@ -23,10 +23,11 @@ import {
   Youtube,
   Telegram,
 } from '@/svgs/socials';
-import ChevronDown from '@/svgs/chevrondown';
-import { ChevronDownIcon } from '@chakra-ui/icons';
-import { SortIcon, SortIconMobile } from '@/svgs/sorticon';
+// import ChevronDown from '@/svgs/chevrondown';
+// import { ChevronDownIcon } from '@chakra-ui/icons';
+// import { SortIcon, SortIconMobile } from '@/svgs/sorticon';
 import { categories } from 'constants/categories';
+// import { ProjectType } from '@/components/Project/ProjectInterface';
 
 import {
   TrendingSubProject,
@@ -34,27 +35,59 @@ import {
   Project,
 } from '@/components/Project';
 
-// import Spline from '@splinetool/react-spline';
 import SplineAnimation from '@/components/SplineAnimation';
+import { supabase } from '@/lib/supabase';
 
 export default function Home() {
-  const [showProjects, setShowProjects] = useState<number>(9);
+  const [projects, setProjects] = useState<any[]>([]);
+  // const [showProjects, setShowProjects] = useState<number>(9);
   const [isLargerthan668] = useMediaQuery('(min-width: 668px)');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  // const [selectedSort, setSelectedSort] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const CategoryCard = ({ name }: { name: string }) => {
-    const [selected, setSelected] = useState<boolean>(false);
+    const handleClick = (category: string) => {
+      setSelectedCategory(category === selectedCategory ? '' : category);
+    };
     return (
       <div
-        onClick={() => setSelected((value) => !value)}
+        onClick={() => handleClick(name)}
         className={`${
-          selected ? 'border-primary-500 bg-primary-300' : 'border-[#3d3a41]'
+          selectedCategory === name
+            ? 'border-primary-500 bg-gradient'
+            : 'border-[#3d3a41]'
         } cursor-pointer  rounded-full border px-7 py-3 transition-colors duration-150 ease-in-out`}
       >
-        <p className="select-none font-semibold text-white">{name}</p>
+        <p className="select-none text-sm font-medium text-white">{name}</p>
       </div>
     );
   };
   const router = useRouter();
+
+  useEffect(() => {
+    const getProjects = async () => {
+      const { data: projects, error } = await supabase
+        .from('projects')
+        .select('*');
+      if (error) console.log('error', error);
+      else setProjects(projects);
+      console.log(projects);
+    };
+    getProjects();
+  }, []);
+
+  const filteredProjects = selectedCategory
+    ? projects.filter((project) =>
+        project.categories.includes(selectedCategory)
+      )
+    : projects;
+
+  const searchedProjects = searchQuery
+    ? filteredProjects.filter((project) =>
+        project.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : filteredProjects;
 
   return (
     <div>
@@ -136,8 +169,8 @@ export default function Home() {
             logo="/cubik.png"
             cover="/cubik-cover.png"
             name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange f"
-            tags={['DEX', 'Solana']}
+            tagline="Cubik is a decentralized, non-custodial, and permissionless exchange f"
+            categories={['DEX', 'Solana']}
             isSuperteam={true}
           />
           <div>
@@ -145,24 +178,24 @@ export default function Home() {
               logo="/cubik.png"
               cover="/cubik-cover.png"
               name="Cubik"
-              description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-              tags={['DEX', 'Solana']}
+              tagline="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
+              categories={['DEX', 'Solana']}
               isSuperteam={true}
             />
             <TrendingSubProject
               logo="/cubik.png"
               cover="/cubik-cover.png"
               name="Cubik"
-              description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-              tags={['DEX', 'Solana']}
+              tagline="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
+              categories={['DEX', 'Solana']}
               isSuperteam={true}
             />
             <TrendingSubProject
               logo="/cubik.png"
               cover="/cubik-cover.png"
               name="Cubik"
-              description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-              tags={['DEX', 'Solana']}
+              tagline="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
+              categories={['DEX', 'Solana']}
               isSuperteam={true}
             />
           </div>
@@ -190,9 +223,10 @@ export default function Home() {
                 _placeholder={{ color: '#77747B' }}
                 mr={4}
                 w={{ base: '94%', md: '100%' }}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </InputGroup>
-            <Menu>
+            {/* <Menu>
               {isLargerthan668 ? (
                 <MenuButton
                   as={Button}
@@ -244,20 +278,17 @@ export default function Home() {
                   Recently Added
                 </MenuItem>
                 <MenuItem bg="#030007" color="#b2afb6">
-                  Most Popular
-                </MenuItem>
-                <MenuItem bg="#030007" color="#b2afb6">
                   A {'->'} Z
                 </MenuItem>
               </MenuList>
-            </Menu>
+            </Menu> */}
           </div>
         </div>
         {/* categories */}
         <div className="relative my-10 flex flex-nowrap overflow-hidden text-white">
           <div className="categories flex w-fit flex-nowrap gap-2 whitespace-nowrap">
             {categories.map((category, i) => {
-              return <CategoryCard key={i} name={category} />;
+              return <CategoryCard key={i} name={category.value} />;
             })}
             <div className="ml-24" />
           </div>
@@ -270,40 +301,17 @@ export default function Home() {
           />
         </div>
         <div className="flex flex-wrap justify-center gap-12">
-          <Project
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-            tags={['DEX', 'Solana']}
-            isSuperteam={true}
-          />
-          <Project
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-            tags={['DEX', 'Solana']}
-            isSuperteam={true}
-          />
-          <Project
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-            tags={['DEX', 'Solana']}
-            isSuperteam={true}
-          />
-          <Project
-            logo="/cubik.png"
-            cover="/cubik-cover.png"
-            name="Cubik"
-            description="Cubik is a decentralized, non-custodial, and permissionless exchange for Solana."
-            tags={['DEX', 'Solana']}
-            isSuperteam={true}
-          />
+          {searchedProjects.map((project, i) => (
+            <Project
+              key={i}
+              tagline={project.tagline}
+              categories={project.categories}
+              isSuperteam={project.isSuperteam}
+              name={project.name}
+            />
+          ))}
         </div>
-        <div className="mx-auto cursor-pointer">
+        {/* <div className="mx-auto cursor-pointer">
           <p
             onClick={() => {
               setShowProjects(showProjects + 5);
@@ -313,7 +321,7 @@ export default function Home() {
             SHOW MORE
           </p>
           <ChevronDown />
-        </div>
+        </div> */}
 
         <div className="mt-36 rounded-3xl bg-gradient p-10">
           <h1 className="text-3xl font-bold text-white md:text-6xl">

@@ -21,13 +21,7 @@ import { FormElement } from '@/components/FormElement';
 import { supabase } from '@/lib/supabase';
 import { sections } from 'constants/sections';
 import { useRouter } from 'next/router';
-
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-  { value: 'butterscotch', label: 'Butterscotch' },
-];
+import { categories } from 'constants/categories';
 
 export default function Submit() {
   const [descCharCount, setDescCharCount] = useState<number>(0);
@@ -75,6 +69,7 @@ export default function Submit() {
         .getPublicUrl(file.name);
       screenshotUrls.push(screenshotUrlData.publicUrl);
     }
+    console.log(formData.categories);
 
     const { data } = await supabase.from('projects').insert({
       name: formData.name,
@@ -363,7 +358,7 @@ export default function Submit() {
                   <MultiSelect
                     value={value || []}
                     onChange={onChange}
-                    options={options}
+                    options={categories}
                   />
                 );
               }}
