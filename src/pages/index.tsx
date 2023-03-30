@@ -78,8 +78,9 @@ export default function Home() {
   }, []);
 
   const filteredProjects = selectedCategory
-    ? projects.filter((project) =>
-        project.categories.includes(selectedCategory)
+    ? projects.filter(
+        (project) =>
+          project.categories && project.categories.includes(selectedCategory)
       )
     : projects;
 
@@ -164,7 +165,7 @@ export default function Home() {
         <h2 className="mt-10 text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl">
           Top Projects
         </h2>
-        <div className="flex flex-col justify-between md:flex-row">
+        <div className="flex w-full flex-col justify-between md:flex-row">
           <TrendingTopProject
             logo="/backpacklogo.jpg"
             cover="/backpack.png"
@@ -173,7 +174,7 @@ export default function Home() {
             isSuperteam={false}
             link="/project/backpack"
           />
-          <div>
+          <div className="w-3/5">
             <TrendingSubProject
               logo="/gumlogo.jpg"
               cover="/cubik-cover.png"
