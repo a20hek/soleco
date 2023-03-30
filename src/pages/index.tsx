@@ -180,6 +180,7 @@ export default function Home() {
               name="Gum"
               tagline="Solana social legos to build sticky apps with ease"
               isSuperteam={true}
+              link="/project/gum"
             />
             <TrendingSubProject
               logo="/candypaylogo.png"
@@ -188,6 +189,7 @@ export default function Home() {
               tagline="CandyPay is a no-code platform powering seamless, mobile native payment experiences on Solana!
               "
               isSuperteam={true}
+              link="/project/candypay"
             />
             <TrendingSubProject
               logo="/rootlogo.png"
@@ -196,6 +198,7 @@ export default function Home() {
               tagline="Traders can trade SOL, BTC, ETH or literally any SPL token with 1000x leverage. This new derivative primitive works without liquidations and does not depend on any oracle."
               // categories={['DEX', 'Solana']}
               isSuperteam={true}
+              link="/project/root-protocol"
             />
           </div>
         </div>
