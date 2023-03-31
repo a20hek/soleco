@@ -174,7 +174,7 @@ export default function Home() {
             isSuperteam={false}
             link="/project/backpack"
           />
-          <div className="w-3/5">
+          <div className="md:w-3/5">
             <TrendingSubProject
               logo="/gumlogo.jpg"
               cover="/cubik-cover.png"

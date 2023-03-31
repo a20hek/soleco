@@ -1,6 +1,7 @@
 import ST from '@/svgs/ST';
 import { Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import overflowText from 'utils/overflow';
 import { ProjectType } from './ProjectInterface';
 
 export const TrendingSubProject = ({
@@ -40,7 +41,9 @@ export const TrendingSubProject = ({
                 ))}
             </div>
           </div>
-          <div className="mt-1 text-neutral-300">{tagline}</div>
+          <div className="mt-1 text-neutral-300">
+            {overflowText(tagline, 120)}
+          </div>
         </div>
       </div>
     </div>
