@@ -1,49 +1,22 @@
 import React, { useState } from 'react';
-import {
-  FormControl,
-  FormLabel,
-  Textarea,
-  useMediaQuery,
-  RadioGroup,
-  Radio,
-  Stack,
-} from '@chakra-ui/react';
-import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import {
-  CheckIcon,
-  ProjectUploadIcon,
-  ScreenshotUploadIcon,
-} from '@/svgs/submit';
-import { useForm, Controller } from 'react-hook-form';
-import Image from 'next/image';
-import MultiSelect from '@/components/MultiSelect';
-import { FormElement } from '@/components/FormElement';
+import { useMediaQuery } from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { CheckIcon } from '@/svgs/submit';
+import { FormProvider, useForm } from 'react-hook-form';
 import { supabase } from '@/lib/supabase';
 import { sections } from 'constants/sections';
 import { useRouter } from 'next/router';
-import { categories } from 'constants/categories';
+import Part1 from '@/components/Form/Part1';
+import Part2 from '@/components/Form/Part2';
+import Part3 from '@/components/Form/Part3';
+import Part4 from '@/components/Form/Part4';
+import { useAtom } from 'jotai';
+import { formAtom } from '@/context/form';
 
 export default function Submit() {
-  const [formStage, setFormStage] = useState<number>(1);
-  const { register, handleSubmit, control, watch } = useForm();
+  const methods = useForm();
   const [isLargerthan640] = useMediaQuery('(min-width: 640px)');
-  const [descCharCount, setDescCharCount] = useState<number>(0);
-
-  const handlePrevClick = () => {
-    setFormStage((prev) => prev - 1);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
-  const handleNextClick = () => {
-    setFormStage((prev) => prev + 1);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
+  const [formStage, setFormStage] = useAtom(formAtom);
 
   const router = useRouter();
 
@@ -57,7 +30,8 @@ export default function Submit() {
     const { data: logoUrlData } = await supabase.storage
       .from('project-logos')
       .getPublicUrl(name);
-    const logoUrl = logoUrlData.publicUrl;
+
+    const logoUrl = logoUrlData && logoUrlData.publicUrl;
 
     const screenshotUrls = [];
     for (const file of formData.screenshots) {
@@ -85,36 +59,10 @@ export default function Submit() {
       telegram: formData.telegram,
     });
 
-    router.push('/submit/thank-you');
+    if (data) {
+      router.push('/submit/thank-you');
+    }
   };
-
-  const watchLogo = watch('logo');
-  let logoPreview = '';
-  if (watchLogo && watchLogo[0]) {
-    logoPreview = URL.createObjectURL(watchLogo[0]);
-  }
-
-  const watchScreenshots = watch('screenshots') as FileList | undefined;
-
-  const previewScreenshots = watchScreenshots
-    ? Object.values(watchScreenshots).map((image) => {
-        const url = URL.createObjectURL(image);
-        return (
-          <div
-            key={image.name}
-            className="mt-4 h-16 w-16 rounded-2xl outline-dashed outline-2 outline-[#7b787f]"
-          >
-            <Image
-              src={url}
-              alt={image.name}
-              className="h-16 w-16 rounded-2xl object-cover"
-              height={16}
-              width={16}
-            />
-          </div>
-        );
-      })
-    : null;
 
   return (
     <>
@@ -181,249 +129,13 @@ export default function Submit() {
         </div>
 
         {/* Form */}
-        {formStage == 1 && (
-          <>
-            <FormElement
-              label="Project"
-              placeholder="Project Name"
-              maxLength={40}
-              htmlFor="name"
-              name="name"
-              register={register}
-            />
-            <FormElement
-              label="Tagline"
-              placeholder="A one sentence description of the project"
-              maxLength={260}
-              htmlFor="tagline"
-              name="tagline"
-              register={register}
-            />
-            <FormElement
-              label="Website Link"
-              placeholder="https://example.com"
-              type="url"
-              htmlFor="website"
-              name="website"
-              register={register}
-            />
+        <FormProvider {...methods}>
+          {formStage == 1 && <Part1 />}
+          {formStage == 2 && <Part2 />}
 
-            <FormControl marginTop={10}>
-              <div className="flex items-baseline justify-between">
-                <FormLabel
-                  htmlFor="description"
-                  color="#d4d1d8"
-                  fontWeight={400}
-                >
-                  Description
-                </FormLabel>
-
-                <p className="text-sm text-[#b7b4bb]">
-                  {descCharCount} / {400}
-                </p>
-              </div>
-              <Textarea
-                id="name"
-                placeholder="A description of the project..."
-                variant="filled"
-                bg="#120f16"
-                _hover={{ bg: '#141118' }}
-                _placeholder={{ color: '#7b787f' }}
-                h="160px"
-                maxLength={400}
-                {...register('description')}
-                onChange={(e) => setDescCharCount(e.target.value.length)}
-              />
-            </FormControl>
-          </>
-        )}
-        {formStage == 2 && (
-          <>
-            <h1 className="mt-16 text-2xl font-semibold">Project Logo</h1>
-            <p className="mt-1 text-neutral-400">
-              Let’s make sure people can find your project easily.
-            </p>
-
-            <div className="mt-5 flex items-center">
-              {logoPreview ? (
-                <div className="h-16 w-16 rounded-2xl outline-dashed outline-2 outline-primary-800">
-                  <Image
-                    src={logoPreview}
-                    alt="logo"
-                    className="h-16 w-16 rounded-2xl object-cover"
-                    height={16}
-                    width={16}
-                  />
-                </div>
-              ) : (
-                <ProjectUploadIcon />
-              )}
-              <div className="ml-5">
-                <label
-                  htmlFor="logo"
-                  className="flex w-fit cursor-pointer items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
-                >
-                  Upload your project logo
-                </label>
-                <p className="mt-2 text-sm text-[#7b787f]">
-                  Image file must be max 160x160px / at an aspect ratio of —1:1,
-                  max 5MB.
-                </p>
-              </div>
-              <input
-                id="logo"
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                {...register('logo')}
-                name="logo"
-              />
-            </div>
-
-            <h1 className="mt-16 text-2xl font-semibold">Screenshots</h1>
-            <p className="mt-1 text-neutral-400">
-              We recommend at least 3 screenshots of your project.
-            </p>
-
-            <div className="mt-5 flex flex-col items-center rounded-2xl p-10 outline-dashed outline-2 outline-[#7b787f]">
-              <ScreenshotUploadIcon />
-              <p className="mt-2 text-primary-600">Browse for files</p>
-              <p className="mt-2 w-80 text-center text-neutral-500">
-                Upload at least one image. 1270x760px or higher recommended,
-                max. 5MB each. The first image will be used as preview.
-              </p>
-              <label
-                htmlFor="screenshots"
-                className="mt-4 flex w-fit cursor-pointer items-center rounded-full border border-white bg-primary-800 py-2 px-6 font-medium text-black transition-all duration-300 hover:bg-black hover:text-white active:bg-white active:text-black"
-              >
-                Browse
-              </label>
-              <input
-                {...register('screenshots')}
-                type="file"
-                name="screenshots"
-                id="screenshots"
-                max={3}
-                style={{ display: 'none' }}
-                accept="image/png, image/jpeg, image/jpg, image/webp"
-                multiple
-              />
-            </div>
-
-            <div className="mt-2 flex gap-5">
-              {previewScreenshots}
-              <label
-                htmlFor="screenshots"
-                className="mt-4 w-fit cursor-pointer rounded-2xl p-5 outline-dashed outline-2 outline-[#7b787f]"
-              >
-                <AddIcon h={5} w={5} color="#7b787f" />
-              </label>
-            </div>
-          </>
-        )}
-
-        {formStage == 3 && (
-          <>
-            <h1 className="mt-16 text-2xl font-semibold">
-              Select a project category
-            </h1>
-            <p className="mt-1 text-neutral-400">Select up to 3 categories</p>
-            <Controller
-              control={control}
-              defaultValue={[]}
-              name="categories"
-              render={({ field: { onChange, value, ref } }) => {
-                console.log('value', value);
-                return (
-                  <MultiSelect
-                    value={value || []}
-                    onChange={onChange}
-                    options={categories}
-                  />
-                );
-              }}
-            />
-
-            <h1 className="mt-16 text-2xl font-semibold">Project Status</h1>
-            <p className="mt-1 text-neutral-400">
-              How far along is the project?
-            </p>
-            <RadioGroup>
-              <Stack direction="row" mt={5} gap={4}>
-                <Radio
-                  colorScheme="purple"
-                  value="Live"
-                  {...register('status')}
-                >
-                  Live on Mainnet, Devnet, or Testnet
-                </Radio>
-                <Radio
-                  colorScheme="purple"
-                  value="Building"
-                  {...register('status')}
-                >
-                  Building
-                </Radio>
-              </Stack>
-            </RadioGroup>
-          </>
-        )}
-        {formStage === 4 && (
-          <>
-            <FormElement
-              label="Twitter"
-              placeholder="https://twitter.com/project"
-              htmlFor="twitter"
-              type="url"
-              name="twitter"
-              register={register}
-            />
-            <FormElement
-              label="Discord"
-              placeholder="https://discord.com/project"
-              htmlFor="discord"
-              type="url"
-              name="discord"
-              register={register}
-            />
-            <FormElement
-              label="Telegram"
-              placeholder="https://telegram.com/project"
-              htmlFor="telegram"
-              type="url"
-              name="telegram"
-              register={register}
-            />
-          </>
-        )}
-        <div
-          className={`mt-16 flex items-center ${
-            formStage > 1 ? 'justify-between' : 'justify-end'
-          }`}
-        >
-          {formStage > 1 && (
-            <button className="flex items-center" onClick={handlePrevClick}>
-              <ArrowBackIcon mr={1} color="#edddff" />
-              <p className="text-sm text-primary-800">GO BACK</p>
-            </button>
-          )}
-          {formStage < 4 ? (
-            <button
-              className="flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
-              onClick={handleNextClick}
-            >
-              <p className="text-sm font-semibold">NEXT STEP</p>
-              <ArrowForwardIcon />
-            </button>
-          ) : (
-            <button
-              className="flex items-center rounded-full bg-gradient py-3 px-6 transition-all duration-300 hover:bg-white hover:text-black active:bg-black active:text-white"
-              onClick={handleSubmit(onSubmit)}
-            >
-              <p className="text-sm font-semibold">SUBMIT PROJECT</p>
-            </button>
-          )}
-        </div>
+          {formStage == 3 && <Part3 />}
+          {formStage === 4 && <Part4 />}
+        </FormProvider>
       </div>
     </>
   );
