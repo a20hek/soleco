@@ -1,7 +1,7 @@
 import ST from '@/svgs/ST';
 import { Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import overflowText from 'utils/overflow';
+import overflowText from '@/utils/overflow';
 import { ProjectType } from './ProjectInterface';
 
 export const Project = ({
