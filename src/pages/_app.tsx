@@ -7,7 +7,7 @@ import { theme } from 'config/chakra.config';
 import { Analytics } from '@vercel/analytics/react';
 import Footer from '@/components/Layout/Footer';
 
-const interTight = Inter_Tight({
+const interTight = Inter({
   subsets: ['latin'],
   variable: '--font-inter-tight',
   display: 'swap',

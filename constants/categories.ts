@@ -25,7 +25,7 @@ export const categories = [
   { value: 'Metaplex', label: 'Metaplex' },
   { value: 'Mobile', label: 'Mobile' },
   { value: 'News Sharing', label: 'News Sharing' },
-  { value: 'NFTS', label: 'NFTS' },
+  { value: 'NFT', label: 'NFT' },
   { value: 'Oracle', label: 'Oracle' },
   { value: 'Payments', label: 'Payments' },
   { value: 'Privacy', label: 'Privacy' },

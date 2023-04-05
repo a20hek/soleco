@@ -48,7 +48,11 @@ export default function Home() {
 
   const CategoryCard = ({ name }: { name: string }) => {
     const handleClick = (category: string) => {
-      setSelectedCategory(category === selectedCategory ? '' : category);
+      setSelectedCategory(
+        category.toLowerCase() === selectedCategory
+          ? ''
+          : category.toLowerCase()
+      );
     };
     return (
       <div
