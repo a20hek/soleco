@@ -10,8 +10,8 @@ export const categories = [
     label: 'DAOs and Network States',
   },
   {
-    value: 'Decentralized Exchanges',
-    label: 'Decentralized Exchanges',
+    value: 'Decentralized Exchange',
+    label: 'Decentralized Exchange',
   },
   { value: 'DeFi', label: 'DeFi' },
   { value: 'Explorer', label: 'Explorer' },

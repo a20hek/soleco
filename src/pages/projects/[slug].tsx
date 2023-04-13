@@ -23,8 +23,8 @@ export default function SlugPage({ data }: any) {
               <div className="text-2xl font-semibold text-white md:mt-2">
                 {data.name}
               </div>
-              <div className="mt-1 text-neutral-300">
-                {/* Revolutionary Secure Messaging & Trading Dapp powered by Solana */}
+              <div className="mt-1 text-neutral-300 md:mr-12">
+                {data?.tagline}
               </div>
               <div className="my-6 flex gap-4 md:mb-0 md:mt-4">
                 {data.discord && <Discord />}

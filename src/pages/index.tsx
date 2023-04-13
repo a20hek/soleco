@@ -1,19 +1,5 @@
 import Head from 'next/head';
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  // Menu,
-  // MenuButton,
-  // MenuItem,
-  // MenuList,
-  useMediaQuery,
-} from '@chakra-ui/react';
-import SearchIcon from '@/svgs/SearchIcon';
-import { useEffect, useRef, useState } from 'react';
+import { Box, Button, Flex, useMediaQuery } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import {
   Twitter,
@@ -23,11 +9,6 @@ import {
   Youtube,
   Telegram,
 } from '@/svgs/socials';
-// import ChevronDown from '@/svgs/chevrondown';
-// import { ChevronDownIcon } from '@chakra-ui/icons';
-// import { SortIcon, SortIconMobile } from '@/svgs/sorticon';
-import { categories } from 'constants/categories';
-// import { ProjectType } from '@/components/Project/ProjectInterface';
 
 import {
   TrendingSubProject,
@@ -39,60 +20,8 @@ import SplineAnimation from '@/components/SplineAnimation';
 import { supabase } from '@/lib/supabase';
 
 export default function Home() {
-  const [projects, setProjects] = useState<any[]>([]);
-  // const [showProjects, setShowProjects] = useState<number>(9);
   const [isLargerthan668] = useMediaQuery('(min-width: 668px)');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  // const [selectedSort, setSelectedSort] = useState<string>('');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-
-  const CategoryCard = ({ name }: { name: string }) => {
-    const handleClick = (category: string) => {
-      setSelectedCategory(
-        category.toLowerCase() === selectedCategory
-          ? ''
-          : category.toLowerCase()
-      );
-    };
-    return (
-      <div
-        onClick={() => handleClick(name)}
-        className={`${
-          selectedCategory === name
-            ? 'border-primary-500 bg-gradient'
-            : 'border-[#3d3a41]'
-        } cursor-pointer  rounded-full border px-7 py-3 transition-colors duration-150 ease-in-out`}
-      >
-        <p className="select-none text-sm font-medium text-white">{name}</p>
-      </div>
-    );
-  };
   const router = useRouter();
-
-  useEffect(() => {
-    const getProjects = async () => {
-      const { data: projects, error } = await supabase
-        .from('projects')
-        .select('*');
-      if (error) console.log('error', error);
-      else setProjects(projects);
-      console.log(projects);
-    };
-    getProjects();
-  }, []);
-
-  const filteredProjects = selectedCategory
-    ? projects.filter(
-        (project) =>
-          project.categories && project.categories.includes(selectedCategory)
-      )
-    : projects;
-
-  const searchedProjects = searchQuery
-    ? filteredProjects.filter((project) =>
-        project.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : filteredProjects;
 
   return (
     <div>
@@ -206,119 +135,6 @@ export default function Home() {
               link="/project/root-protocol"
             />
           </div>
-        </div>
-        <div className="mt-36 flex flex-col justify-between md:mt-64 md:flex-row">
-          <h2
-            className="text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl"
-            id="projects"
-          >
-            Explore all projects
-          </h2>
-          <div className="mt-4 flex justify-between md:mt-0">
-            <InputGroup w={'30rem'}>
-              <InputLeftElement pointerEvents="none" h="48px" w="48px">
-                <SearchIcon />
-              </InputLeftElement>
-              <Input
-                placeholder="Search projects, category..."
-                rounded="8px"
-                variant="filled"
-                bgColor="#100f12"
-                h="48px"
-                color="white"
-                _hover={{ bgColor: '#141316' }}
-                _placeholder={{ color: '#77747B' }}
-                mr={4}
-                w={{ base: '94%', md: '100%' }}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </InputGroup>
-            {/* <Menu>
-              {isLargerthan668 ? (
-                <MenuButton
-                  as={Button}
-                  leftIcon={<SortIcon />}
-                  rightIcon={<ChevronDownIcon color="#edddff" />}
-                  _hover={{ bgColor: 'none' }}
-                  _active={{
-                    bgColor: 'none',
-                    borderColor: '#cea3ff',
-                    color: '#cea3ff',
-                  }}
-                  bg="none"
-                  rounded="full"
-                  borderColor="#edddff"
-                  borderWidth="2px"
-                  color="#edddff"
-                  fontSize="16px"
-                  h="48px"
-                  fontWeight={500}
-                >
-                  Sort by
-                </MenuButton>
-              ) : (
-                <MenuButton
-                  as={Button}
-                  _hover={{ bgColor: 'none' }}
-                  _active={{
-                    bgColor: 'none',
-                    borderColor: '#cea3ff',
-                    color: '#cea3ff',
-                  }}
-                  bg="none"
-                  rounded="full"
-                  borderColor="#edddff"
-                  borderWidth="2px"
-                  color="#edddff"
-                  fontSize="16px"
-                  p={3}
-                  h="48px"
-                  flexShrink={0}
-                  fontWeight={500}
-                >
-                  <SortIconMobile />
-                </MenuButton>
-              )}
-
-              <MenuList bg="#030007" borderColor="#3D3A41">
-                <MenuItem bg="#030007" color="#b2afb6">
-                  Recently Added
-                </MenuItem>
-                <MenuItem bg="#030007" color="#b2afb6">
-                  A {'->'} Z
-                </MenuItem>
-              </MenuList>
-            </Menu> */}
-          </div>
-        </div>
-        {/* categories */}
-        <div className="relative my-10 flex flex-nowrap overflow-hidden text-white">
-          <div className="categories flex w-fit flex-nowrap gap-2 whitespace-nowrap">
-            {categories.map((category, i) => {
-              return <CategoryCard key={i} name={category.value} />;
-            })}
-            <div className="ml-24" />
-          </div>
-          <Box
-            bg="linear-gradient(270deg, #030007 0%, rgba(3, 0, 7, 0) 100%)"
-            w={24}
-            h="full"
-            right="0"
-            position="absolute"
-          />
-        </div>
-        <div className="flex flex-wrap justify-center gap-12">
-          {searchedProjects.map((project, i) => (
-            <Project
-              logo={project.logo}
-              key={i}
-              tagline={project.tagline}
-              categories={project.categories}
-              isSuperteam={project.isSuperteam}
-              name={project.name}
-              slug={project.slug}
-            />
-          ))}
         </div>
         {/* <div className="mx-auto cursor-pointer">
           <p
