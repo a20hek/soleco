@@ -1,102 +1,106 @@
+import React, { useEffect, useState, useMemo } from 'react';
+import { supabase } from '@/lib/supabase';
+import { categories } from 'constants/categories';
+import { Project } from '@/components/Project';
+import CategoryCard from '@/components/CategoryCard';
+import Pagination from '@/components/Pagination';
 import SearchIcon from '@/svgs/SearchIcon';
 import {
   Box,
   Input,
   InputGroup,
   InputLeftElement,
-  useMediaQuery,
+  Skeleton,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { categories } from 'constants/categories';
-import { Project } from '@/components/Project';
+import { useDebounce } from 'use-debounce';
 
-const CategoryCard = ({
-  name,
-  selectedCategory,
-  onClick,
-}: {
-  name: string;
-  selectedCategory: string;
-  onClick: (name: string) => void;
-}) => {
-  const handleClick = () => {
-    onClick(name);
-  };
+const itemsPerPage = 12;
 
-  const isSelected = selectedCategory.toLowerCase() === name.toLowerCase();
-
-  return (
-    <div
-      onClick={handleClick}
-      className={`${
-        isSelected ? 'border-primary-500 bg-gradient' : 'border-[#3d3a41]'
-      } cursor-pointer rounded-full border px-7 py-3 transition-colors duration-150 ease-in-out`}
-    >
-      <p className="select-none text-sm font-medium text-white">{name}</p>
-    </div>
-  );
-};
-
-const itemsPerPage = 10;
-
-export default function Projects() {
+const Projects = () => {
   const [projects, setProjects] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 300);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleClick = (category: string) => {
     setSelectedCategory(
       category.toLowerCase() === selectedCategory ? '' : category.toLowerCase()
     );
+    setCurrentPage(1);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setCurrentPage(1);
   };
-
-  const router = useRouter();
 
   useEffect(() => {
     const getProjects = async () => {
+      setIsLoading(true);
       const { data: projects, error } = await supabase
         .from('projects')
         .select('*');
       if (error) console.log('error', error);
       else setProjects(projects);
       console.log(projects);
+      setIsLoading(false);
     };
     getProjects();
   }, []);
 
-  const filteredProjects = selectedCategory
-    ? projects.filter(
-        (project) =>
-          project.categories && project.categories.includes(selectedCategory)
-      )
-    : projects;
+  const filteredProjects = useMemo(
+    () =>
+      selectedCategory
+        ? projects.filter(
+            (project) =>
+              project.categories &&
+              project.categories.includes(selectedCategory)
+          )
+        : projects,
+    [projects, selectedCategory]
+  );
 
-  const searchedProjects = searchQuery
-    ? filteredProjects.filter((project) =>
-        project.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : filteredProjects;
+  const searchedProjects = useMemo(
+    () =>
+      debouncedSearchQuery
+        ? filteredProjects.filter((project) =>
+            project.name
+              .toLowerCase()
+              .includes(debouncedSearchQuery.toLowerCase())
+          )
+        : filteredProjects,
+    [filteredProjects, debouncedSearchQuery]
+  );
 
   const totalPages = Math.ceil(searchedProjects.length / itemsPerPage);
-  const displayedProjects = searchedProjects.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  const displayedProjects = useMemo(
+    () =>
+      searchedProjects.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      ),
+    [searchedProjects, currentPage]
   );
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
+  const projectSkeletons = new Array(3)
+    .fill(0)
+    .map((_, index) => (
+      <Skeleton
+        key={index}
+        borderRadius="3xl"
+        className="h-[22rem] w-[21rem]"
+      />
+    ));
+
   return (
     <div className="mx-auto w-[90%] max-w-[1128px]">
-      <div className="mt-36 flex flex-col justify-between md:mt-64 md:flex-row">
+      <div className="mt-36 flex flex-col justify-between md:mt-40 md:flex-row">
         <h2
           className="text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl"
           id="projects"
@@ -127,16 +131,14 @@ export default function Projects() {
       {/* categories */}
       <div className="relative my-10 flex flex-nowrap overflow-hidden text-white">
         <div className="categories flex w-fit flex-nowrap gap-2 whitespace-nowrap">
-          {categories.map((category, i) => {
-            return (
-              <CategoryCard
-                selectedCategory={selectedCategory}
-                key={i}
-                name={category.value}
-                onClick={handleClick}
-              />
-            );
-          })}
+          {categories.map((category, i) => (
+            <CategoryCard
+              selectedCategory={selectedCategory}
+              key={i}
+              name={category.value}
+              onClick={handleClick}
+            />
+          ))}
           <div className="ml-24" />
         </div>
         <Box
@@ -148,65 +150,39 @@ export default function Projects() {
         />
       </div>
       <div className="flex flex-wrap justify-center gap-12">
-        {displayedProjects.map((project, i) => (
-          <Project
-            logo={project.logo}
-            key={project.id}
-            tagline={project.tagline}
-            categories={project.categories}
-            isSuperteam={project.isSuperteam}
-            name={project.name}
-            slug={project.slug}
+        {isLoading ? (
+          <div className="mt-12 mb-36 grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3">
+            {projectSkeletons}
+          </div>
+        ) : displayedProjects.length > 0 && totalPages > 1 ? (
+          displayedProjects.map((project, i) => (
+            <Project
+              logo={project.logo}
+              key={project.id}
+              tagline={project.tagline}
+              categories={project.categories}
+              isSuperteam={project.isSuperteam}
+              name={project.name}
+              slug={project.slug}
+            />
+          ))
+        ) : (
+          <div className="mt-12 mb-36 text-xl text-white">
+            No projects found matching your search or category.
+          </div>
+        )}
+      </div>
+      {displayedProjects.length > 0 && totalPages > 1 && (
+        <div className="mt-8 mb-24 flex justify-center">
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
           />
-        ))}
-      </div>
-      <div className="mt-6 flex justify-center">
-        <nav>
-          <ul className="flex items-center justify-center text-white">
-            {currentPage > 2 && (
-              <>
-                <li
-                  className={`cursor-pointer rounded px-4 py-2`}
-                  onClick={() => handlePageChange(1)}
-                >
-                  1
-                </li>
-                <li className="px-2">...</li>
-              </>
-            )}
-            {currentPage > 1 && (
-              <li
-                className={`cursor-pointer rounded px-4 py-2`}
-                onClick={() => handlePageChange(currentPage - 1)}
-              >
-                {currentPage - 1}
-              </li>
-            )}
-            <li className={`cursor-pointer rounded bg-primary-500 px-4 py-2`}>
-              {currentPage}
-            </li>
-            {currentPage < totalPages && (
-              <li
-                className={`cursor-pointer rounded px-4 py-2`}
-                onClick={() => handlePageChange(currentPage + 1)}
-              >
-                {currentPage + 1}
-              </li>
-            )}
-            {currentPage < totalPages - 1 && (
-              <>
-                <li className="px-2">...</li>
-                <li
-                  className={`cursor-pointer rounded px-4 py-2`}
-                  onClick={() => handlePageChange(totalPages)}
-                >
-                  {totalPages}
-                </li>
-              </>
-            )}
-          </ul>
-        </nav>
-      </div>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default Projects;

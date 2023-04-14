@@ -78,7 +78,7 @@ export default function Home() {
               w={{ base: '60%', md: 'auto' }}
               px={12}
               h={14}
-              onClick={() => router.push('/#projects')}
+              onClick={() => router.push('/projects')}
             >
               Explore Projects
             </Button>

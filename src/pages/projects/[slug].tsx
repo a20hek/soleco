@@ -2,12 +2,90 @@ import { useRouter } from 'next/router';
 import { supabase } from '@/lib/supabase';
 import LinkArrow from '@/svgs/LinkArrow';
 import { Button, Image } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Discord, Twitter, Telegram } from '@/svgs/socials';
+import { Project } from '@/components/Project';
 
-export default function SlugPage({ data }: any) {
+interface Data {
+  logo: string;
+  name: string;
+  tagline: string;
+  discord: string;
+  twitter: string;
+  telegram: string;
+  website: string;
+  categories: string[];
+  description: string;
+  screenshots: string[];
+}
+
+interface SlugPageProps {
+  data: Data;
+}
+
+interface StaticPathsResult {
+  params: { slug: string };
+}
+
+function SimilarProjects({ categories }: { categories: string[] }) {
+  const [similarProjects, setSimilarProjects] = useState<any[]>([]);
   const router = useRouter();
-  console.log(data);
+
+  const fetchSimilarProjects = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .contains('categories', categories)
+      .neq('slug', router.query.slug)
+      .limit(10);
+
+    if (error) {
+      console.error('Error fetching similar projects:', error);
+    } else if (data.length === 0) {
+      const { data: newData, error: newError } = await supabase
+        .from('projects')
+        .select('*')
+        .contains('categories', [categories[0]])
+        .neq('slug', router.query.slug)
+        .limit(10);
+
+      if (newError) {
+        console.error(
+          'Error fetching projects based on one category:',
+          newError
+        );
+      } else {
+        setSimilarProjects(newData);
+      }
+    } else {
+      setSimilarProjects(data);
+    }
+  }, [categories, router.query.slug]);
+
+  useEffect(() => {
+    fetchSimilarProjects();
+  }, [fetchSimilarProjects]);
+
+  return (
+    <div>
+      <h2 className="mt-16 text-2xl font-semibold text-white">
+        Similar Projects
+      </h2>
+      <div className="custom-scrollbar relative mt-4 overflow-x-auto text-white">
+        <div className="flex flex-nowrap gap-8">
+          {similarProjects.map((project) => (
+            <div key={project.slug} className="">
+              <Project {...project} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function SlugPage({ data }: SlugPageProps) {
+  const router = useRouter();
 
   if (router.isFallback) {
     return <div>Loading...</div>;
@@ -18,12 +96,24 @@ export default function SlugPage({ data }: any) {
       <div className="mx-auto w-[90%] max-w-[1128px] py-28 md:py-44">
         <div className="flex flex-col justify-between md:flex-row">
           <div className="flex flex-col gap-5 md:flex-row md:items-center">
-            <Image src={data.logo} alt="/" className="h-24 w-24 rounded-full" />
+            {data.logo ? (
+              <Image
+                src={data.logo}
+                alt={data.name}
+                className="h-24 w-24 rounded-full"
+              />
+            ) : (
+              <Image
+                src="/placeholderlogo.png"
+                alt={data.name}
+                className="h-24 w-24 rounded-full"
+              />
+            )}
             <div>
-              <div className="text-2xl font-semibold text-white md:mt-2">
+              <div className="text-3xl font-semibold text-white md:mt-2">
                 {data.name}
               </div>
-              <div className="mt-1 text-neutral-300 md:mr-12">
+              <div className="mt-1 text-lg text-neutral-300 md:mr-12">
                 {data?.tagline}
               </div>
               <div className="my-6 flex gap-4 md:mb-0 md:mt-4">
@@ -64,46 +154,45 @@ export default function SlugPage({ data }: any) {
                   key={i}
                   className="h-fit w-fit rounded-md bg-neutral-900 py-1 px-3"
                 >
-                  <p className="text-xs text-neutral-300">{category}</p>
+                  <p className="text-xs capitalize text-neutral-300">
+                    {category}
+                  </p>
                 </div>
               );
             })}
         </div>
         <div>
-          <div className="mt-16 text-xl font-semibold text-white">
+          <div className="mt-16 text-2xl font-semibold text-white">
             About {data.name}
           </div>
-          <div className="mt-2 text-neutral-400">{data.description}</div>
+          <div className="mt-2 text-lg text-neutral-400">
+            {data.description}
+          </div>
 
-          <div className="mt-16 text-xl font-semibold text-white">
+          <div className="mt-16 text-2xl font-semibold text-white">
             Screenshots
           </div>
-          {/* <div className="custom-scrollbar mt-4 flex flex-nowrap overflow-x-scroll text-white">
-            <div className="flex flex-nowrap gap-4 whitespace-nowrap">
-              <Image
-                src="/cubik-cover.png"
-                alt="/"
-                className="mb-6 h-72 w-[28rem] rounded object-cover"
-              />
-              <Image
-                src="/cubik-cover.png"
-                alt="/"
-                className="mb-6 h-72 w-[28rem] rounded object-cover"
-              />
-              <Image
-                src="/cubik-cover.png"
-                alt="/"
-                className="mb-6 h-72 w-[28rem] rounded object-cover"
-              />
-              <Image
-                src="/cubik-cover.png"
-                alt="/"
-                className="mb-6 h-72 w-[28rem] rounded object-cover"
-              />
+          {data.screenshots && data.screenshots.length > 0 ? (
+            <div className="custom-scrollbar mt-4 flex flex-nowrap overflow-x-auto text-white">
+              <div className="flex flex-nowrap gap-4 whitespace-nowrap">
+                {data.screenshots.map((screenshot: string) => (
+                  <Image
+                    key={screenshot}
+                    src={screenshot}
+                    alt="/"
+                    className="mb-6 h-72 w-[28rem] rounded object-cover"
+                  />
+                ))}
+              </div>
             </div>
-          </div> */}
-          <p className="text-neutral-400">Screenshots to be added soon</p>
+          ) : (
+            <p className="mt-2 text-neutral-400">
+              There are no screenshots to display for this project at the
+              moment.
+            </p>
+          )}
         </div>
+        <SimilarProjects categories={data.categories} />
       </div>
     </div>
   );
@@ -113,7 +202,6 @@ export async function getStaticPaths() {
   const { data, error } = await supabase.from('projects').select('slug');
 
   if (error) {
-    console.error(error);
     return {
       notFound: true,
     };
@@ -126,7 +214,7 @@ export async function getStaticPaths() {
   return { paths, fallback: 'blocking' };
 }
 
-export async function getStaticProps({ params }: any) {
+export async function getStaticProps({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const { data, error } = await supabase
     .from('projects')
@@ -135,7 +223,6 @@ export async function getStaticProps({ params }: any) {
     .single();
 
   if (error) {
-    console.error(error);
     return {
       notFound: true,
     };
