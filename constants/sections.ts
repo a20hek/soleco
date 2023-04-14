@@ -6,9 +6,6 @@ export const sections = [
     title: 'Media',
   },
   {
-    title: 'Category',
-  },
-  {
-    title: 'Socials',
+    title: 'Category & Socials',
   },
 ];

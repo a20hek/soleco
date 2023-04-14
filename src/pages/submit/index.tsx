@@ -1,68 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { CheckIcon } from '@/svgs/submit';
 import { FormProvider, useForm } from 'react-hook-form';
-import { supabase } from '@/lib/supabase';
 import { sections } from 'constants/sections';
 import { useRouter } from 'next/router';
 import Part1 from '@/components/Form/Part1';
 import Part2 from '@/components/Form/Part2';
 import Part3 from '@/components/Form/Part3';
-import Part4 from '@/components/Form/Part4';
 import { useAtom } from 'jotai';
-import { formAtom } from '@/context/form';
+import { formAtom } from '@/context/formStage';
+import { formValuesAtom } from '@/context/formValues';
 
 export default function Submit() {
   const methods = useForm();
   const [isLargerthan640] = useMediaQuery('(min-width: 640px)');
   const [formStage, setFormStage] = useAtom(formAtom);
+  const [formValues, setFormValues] = useAtom(formValuesAtom);
 
   const router = useRouter();
 
-  const onSubmit = async (formData: any) => {
-    const name = formData.name;
-
-    const { error } = await supabase.storage
-      .from('project-logos')
-      .upload(name, formData.logo[0]);
-
-    const { data: logoUrlData } = await supabase.storage
-      .from('project-logos')
-      .getPublicUrl(name);
-
-    const logoUrl = logoUrlData && logoUrlData.publicUrl;
-
-    const screenshotUrls = [];
-    for (const file of formData.screenshots) {
-      const { error } = await supabase.storage
-        .from('project-screenshots')
-        .upload(name + file.name, file);
-      const { data: screenshotUrlData } = await supabase.storage
-        .from('project-screenshots')
-        .getPublicUrl(file.name);
-      screenshotUrls.push(screenshotUrlData.publicUrl);
-    }
-    console.log(formData.categories);
-
-    const { data } = await supabase.from('projects').insert({
-      name: formData.name,
-      tagline: formData.tagline,
-      website: formData.website,
-      description: formData.description,
-      logo: logoUrl as string,
-      screenshots: screenshotUrls,
-      categories: formData.categories,
-      status: formData.status,
-      twitter: formData.twitter,
-      discord: formData.discord,
-      telegram: formData.telegram,
-    });
-
-    if (data) {
-      router.push('/submit/thank-you');
-    }
-  };
+  useEffect(() => {
+    console.log('form: ', formValues);
+  }, [formValues, formStage]);
 
   return (
     <>
@@ -74,7 +33,7 @@ export default function Submit() {
             ? 'Add Images and Media'
             : formStage === 3
             ? 'Category'
-            : 'Socials'}
+            : ''}
         </h1>
         {formStage === 1 && (
           <h3 className="mt-2">
@@ -91,7 +50,7 @@ export default function Submit() {
                 key={i}
                 className={`${
                   formStage > i + 1 ? 'bg-gradient' : 'border sm:bg-primary-800'
-                } mt-12 rounded-[60px] border-primary-800 sm:w-1/4 ${
+                } mt-12 rounded-[60px] border-primary-800 sm:w-1/3 ${
                   formStage < i + 1 ? 'opacity-30' : ''
                 }`}
               >
@@ -132,9 +91,7 @@ export default function Submit() {
         <FormProvider {...methods}>
           {formStage == 1 && <Part1 />}
           {formStage == 2 && <Part2 />}
-
           {formStage == 3 && <Part3 />}
-          {formStage === 4 && <Part4 />}
         </FormProvider>
       </div>
     </>

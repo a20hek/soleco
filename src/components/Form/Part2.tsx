@@ -3,11 +3,16 @@ import { AddIcon, ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useForm, useFormContext } from 'react-hook-form';
 import Image from 'next/image';
-import { formAtom } from '@/context/form';
+import { formAtom } from '@/context/formStage';
 import { useAtom } from 'jotai';
+import { formValuesAtom } from '@/context/formValues';
 
 export default function Part2() {
-  const { register, watch } = useForm();
+  const [formValues, setFormValues] = useAtom(formValuesAtom);
+  const { register, handleSubmit, formState, watch } = useForm({
+    defaultValues: formValues,
+    mode: 'onChange',
+  });
   const watchLogo = watch('logo');
   let logoPreview = '';
   if (watchLogo && watchLogo[0]) {
@@ -47,11 +52,17 @@ export default function Part2() {
   };
 
   const handleNextClick = () => {
+    handleSubmit(onSubmit)();
+
     setFormStage((prev) => prev + 1);
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
+  };
+
+  const onSubmit = (data: any) => {
+    setFormValues((prevValues: any) => ({ ...prevValues, ...data }));
   };
 
   return (
@@ -92,7 +103,7 @@ export default function Part2() {
           type="file"
           accept="image/*"
           style={{ display: 'none' }}
-          {...register('logo')}
+          {...register('logo', { required: true })}
           name="logo"
         />
       </div>
@@ -116,7 +127,7 @@ export default function Part2() {
           Browse
         </label>
         <input
-          {...register('screenshots')}
+          {...register('screenshots', { required: false })}
           type="file"
           name="screenshots"
           id="screenshots"
@@ -142,8 +153,9 @@ export default function Part2() {
           <p className="text-sm text-primary-800">GO BACK</p>
         </button>
         <button
-          className="flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white"
+          className="flex items-center rounded-full border border-primary-800 py-3 px-6 text-primary-800 transition-all duration-300 hover:bg-primary-800 hover:text-black active:bg-black active:text-white disabled:pointer-events-none disabled:opacity-30"
           onClick={handleNextClick}
+          disabled={!formState.isValid}
         >
           <p className="text-sm font-semibold">NEXT STEP</p>
           <ArrowForwardIcon />

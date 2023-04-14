@@ -23,10 +23,6 @@ interface SlugPageProps {
   data: Data;
 }
 
-interface StaticPathsResult {
-  params: { slug: string };
-}
-
 function SimilarProjects({ categories }: { categories: string[] }) {
   const [similarProjects, setSimilarProjects] = useState<any[]>([]);
   const router = useRouter();
@@ -38,7 +34,6 @@ function SimilarProjects({ categories }: { categories: string[] }) {
       .contains('categories', categories)
       .neq('slug', router.query.slug)
       .limit(10);
-
     if (error) {
       console.error('Error fetching similar projects:', error);
     } else if (data.length === 0) {
@@ -48,7 +43,6 @@ function SimilarProjects({ categories }: { categories: string[] }) {
         .contains('categories', [categories[0]])
         .neq('slug', router.query.slug)
         .limit(10);
-
       if (newError) {
         console.error(
           'Error fetching projects based on one category:',
@@ -117,9 +111,9 @@ export default function SlugPage({ data }: SlugPageProps) {
                 {data?.tagline}
               </div>
               <div className="my-6 flex gap-4 md:mb-0 md:mt-4">
-                {data.discord && <Discord />}
-                {data.twitter && <Twitter />}
-                {data.telegram && <Telegram />}
+                {data.discord && <Discord link={data.discord} />}
+                {data.twitter && <Twitter link={data.twitter} />}
+                {data.telegram && <Telegram link={data.telegram} />}
               </div>
             </div>
           </div>

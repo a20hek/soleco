@@ -105,7 +105,7 @@ export default function Home() {
             name="Backpack"
             tagline="The home for your xNFTs. "
             isSuperteam={false}
-            link="/project/backpack"
+            link="/projects/backpack"
           />
           <div className="md:w-3/5">
             <TrendingSubProject
@@ -114,7 +114,7 @@ export default function Home() {
               name="Gum"
               tagline="Solana social legos to build sticky apps with ease"
               isSuperteam={true}
-              link="/project/gum"
+              link="/projects/gum"
             />
             <TrendingSubProject
               logo="/candypaylogo.png"
@@ -123,7 +123,7 @@ export default function Home() {
               tagline="CandyPay is a no-code platform powering seamless, mobile native payment experiences on Solana!
               "
               isSuperteam={true}
-              link="/project/candypay"
+              link="/projects/candypay"
             />
             <TrendingSubProject
               logo="/rootlogo.png"
@@ -132,21 +132,10 @@ export default function Home() {
               tagline="Traders can trade SOL, BTC, ETH or literally any SPL token with 1000x leverage. This new derivative primitive works without liquidations and does not depend on any oracle."
               // categories={['DEX', 'Solana']}
               isSuperteam={true}
-              link="/project/root-protocol"
+              link="/projects/root-protocol"
             />
           </div>
         </div>
-        {/* <div className="mx-auto cursor-pointer">
-          <p
-            onClick={() => {
-              setShowProjects(showProjects + 5);
-            }}
-            className="mb-2 mt-4 select-none text-center text-sm font-semibold tracking-[0.2em] text-white md:mt-8"
-          >
-            SHOW MORE
-          </p>
-          <ChevronDown />
-        </div> */}
 
         <div className="mt-36 rounded-3xl bg-gradient p-10">
           <h1 className="text-3xl font-bold text-white md:text-6xl">
@@ -176,7 +165,7 @@ export default function Home() {
           >
             <Flex flexDir="column" gap="16px" mx={4}>
               <Flex>
-                <Twitter />
+                <Twitter link="https://twitter.com/SuperteamDAO" />
                 <p className="ml-3 text-lg font-semibold text-white">Twitter</p>
               </Flex>
               <Flex>
@@ -184,7 +173,7 @@ export default function Home() {
                 <p className="ml-3 text-lg font-semibold text-white">Github</p>
               </Flex>
               <Flex>
-                <Telegram />
+                <Telegram link="" />
                 <p className="ml-3 text-lg font-semibold text-white">
                   Telegram
                 </p>
@@ -197,7 +186,7 @@ export default function Home() {
                 <p className="ml-3 text-lg font-semibold text-white">Reddit</p>
               </Flex>
               <Flex>
-                <Discord />
+                <Discord link="" />
                 <p className="ml-3 text-lg font-semibold text-white">Discord</p>
               </Flex>
               <Flex>

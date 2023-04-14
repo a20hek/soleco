@@ -93,6 +93,8 @@ const Projects = () => {
     .map((_, index) => (
       <Skeleton
         key={index}
+        startColor="#110F14"
+        endColor="gray.700"
         borderRadius="3xl"
         className="h-[22rem] w-[21rem]"
       />
@@ -151,7 +153,7 @@ const Projects = () => {
       </div>
       <div className="flex flex-wrap justify-center gap-12">
         {isLoading ? (
-          <div className="mt-12 mb-36 grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3">
+          <div className="flex flex-wrap justify-center gap-12">
             {projectSkeletons}
           </div>
         ) : displayedProjects.length > 0 && totalPages > 1 ? (
