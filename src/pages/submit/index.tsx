@@ -10,6 +10,7 @@ import Part3 from '@/components/Form/Part3';
 import { useAtom } from 'jotai';
 import { formAtom } from '@/context/formStage';
 import { formValuesAtom } from '@/context/formValues';
+import Head from 'next/head';
 
 export default function Submit() {
   const methods = useForm();
@@ -25,6 +26,11 @@ export default function Submit() {
 
   return (
     <>
+      <Head>
+        <title>Submit your Project | Superteam Ecosystem</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className="mx-auto mt-12 w-[90%] max-w-[800px] py-28 text-[#fbf8ff]">
         <h1 className="text-4xl font-bold tracking-tight">
           {formStage === 1

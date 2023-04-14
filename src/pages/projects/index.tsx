@@ -13,6 +13,7 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import { useDebounce } from 'use-debounce';
+import Head from 'next/head';
 
 const itemsPerPage = 12;
 
@@ -101,89 +102,96 @@ const Projects = () => {
     ));
 
   return (
-    <div className="mx-auto w-[90%] max-w-[1128px]">
-      <div className="mt-36 flex flex-col justify-between md:mt-40 md:flex-row">
-        <h2
-          className="text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl"
-          id="projects"
-        >
-          Explore all projects
-        </h2>
-        <div className="mt-4 flex justify-between md:mt-0">
-          <InputGroup w={'30rem'}>
-            <InputLeftElement pointerEvents="none" h="48px" w="48px">
-              <SearchIcon />
-            </InputLeftElement>
-            <Input
-              placeholder="Search projects, category..."
-              rounded="8px"
-              variant="filled"
-              bgColor="#100f12"
-              h="48px"
-              color="white"
-              _hover={{ bgColor: '#141316' }}
-              _placeholder={{ color: '#77747B' }}
-              mr={4}
-              w={{ base: '94%', md: '100%' }}
-              onChange={handleSearchChange}
-            />
-          </InputGroup>
-        </div>
-      </div>
-      {/* categories */}
-      <div className="relative my-10 flex flex-nowrap overflow-hidden text-white">
-        <div className="categories flex w-fit flex-nowrap gap-2 whitespace-nowrap">
-          {categories.map((category, i) => (
-            <CategoryCard
-              selectedCategory={selectedCategory}
-              key={i}
-              name={category.value}
-              onClick={handleClick}
-            />
-          ))}
-          <div className="ml-24" />
-        </div>
-        <Box
-          bg="linear-gradient(270deg, #030007 0%, rgba(3, 0, 7, 0) 100%)"
-          w={24}
-          h="full"
-          right="0"
-          position="absolute"
-        />
-      </div>
-      <div className="flex flex-wrap justify-center gap-12">
-        {isLoading ? (
-          <div className="flex flex-wrap justify-center gap-12">
-            {projectSkeletons}
+    <>
+      <Head>
+        <title>Projects | Superteam Ecosystem</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className="mx-auto w-[90%] max-w-[1128px]">
+        <div className="mt-36 flex flex-col justify-between md:mt-40 md:flex-row">
+          <h2
+            className="text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl"
+            id="projects"
+          >
+            Explore all projects
+          </h2>
+          <div className="mt-4 flex justify-between md:mt-0">
+            <InputGroup w={'30rem'}>
+              <InputLeftElement pointerEvents="none" h="48px" w="48px">
+                <SearchIcon />
+              </InputLeftElement>
+              <Input
+                placeholder="Search projects, category..."
+                rounded="8px"
+                variant="filled"
+                bgColor="#100f12"
+                h="48px"
+                color="white"
+                _hover={{ bgColor: '#141316' }}
+                _placeholder={{ color: '#77747B' }}
+                mr={4}
+                w={{ base: '94%', md: '100%' }}
+                onChange={handleSearchChange}
+              />
+            </InputGroup>
           </div>
-        ) : displayedProjects.length > 0 && totalPages > 1 ? (
-          displayedProjects.map((project, i) => (
-            <Project
-              logo={project.logo}
-              key={project.id}
-              tagline={project.tagline}
-              categories={project.categories}
-              isSuperteam={project.isSuperteam}
-              name={project.name}
-              slug={project.slug}
+        </div>
+        {/* categories */}
+        <div className="relative my-10 flex flex-nowrap overflow-hidden text-white">
+          <div className="categories flex w-fit flex-nowrap gap-2 whitespace-nowrap">
+            {categories.map((category, i) => (
+              <CategoryCard
+                selectedCategory={selectedCategory}
+                key={i}
+                name={category.value}
+                onClick={handleClick}
+              />
+            ))}
+            <div className="ml-24" />
+          </div>
+          <Box
+            bg="linear-gradient(270deg, #030007 0%, rgba(3, 0, 7, 0) 100%)"
+            w={24}
+            h="full"
+            right="0"
+            position="absolute"
+          />
+        </div>
+        <div className="flex flex-wrap justify-center gap-12">
+          {isLoading ? (
+            <div className="flex flex-wrap justify-center gap-12">
+              {projectSkeletons}
+            </div>
+          ) : displayedProjects.length > 0 && totalPages > 1 ? (
+            displayedProjects.map((project, i) => (
+              <Project
+                logo={project.logo}
+                key={project.id}
+                tagline={project.tagline}
+                categories={project.categories}
+                isSuperteam={project.isSuperteam}
+                name={project.name}
+                slug={project.slug}
+              />
+            ))
+          ) : (
+            <div className="mt-12 mb-36 text-xl text-white">
+              No projects found matching your search or category.
+            </div>
+          )}
+        </div>
+        {displayedProjects.length > 0 && totalPages > 1 && (
+          <div className="mt-8 mb-24 flex justify-center">
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
             />
-          ))
-        ) : (
-          <div className="mt-12 mb-36 text-xl text-white">
-            No projects found matching your search or category.
           </div>
         )}
       </div>
-      {displayedProjects.length > 0 && totalPages > 1 && (
-        <div className="mt-8 mb-24 flex justify-center">
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

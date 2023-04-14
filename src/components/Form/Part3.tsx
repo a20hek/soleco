@@ -10,6 +10,7 @@ import MultiSelect from '../MultiSelect';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/router';
 import { formValuesAtom } from '@/context/formValues';
+import { Spinner } from '@chakra-ui/react';
 
 export default function Part3() {
   const [formValues, setFormValues] = useAtom(formValuesAtom);
@@ -18,6 +19,7 @@ export default function Part3() {
     mode: 'onChange',
   });
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [formStage, setFormStage] = useAtom(formAtom);
   const router = useRouter();
@@ -78,8 +80,15 @@ export default function Part3() {
       discord: formValues.discord,
       telegram: formValues.telegram,
     });
+    setIsSubmitted(true);
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (isSubmitted) {
+      router.push('/submit/thank-you');
+    }
+  }, [isSubmitted]);
 
   return (
     <>
@@ -157,13 +166,20 @@ export default function Part3() {
           <p className="text-sm text-primary-800">GO BACK</p>
         </button>
         <button
-          className={`flex items-center rounded-full bg-gradient  py-3 px-6 transition-all duration-300 ease-in-out hover:scale-105 hover:bg-white hover:shadow-md active:bg-black active:text-white disabled:pointer-events-none disabled:opacity-50 ${
+          className={`flex items-center rounded-full bg-gradient py-3 px-6 transition-all duration-300 ease-in-out hover:scale-105 hover:bg-white hover:shadow-md active:bg-black active:text-white disabled:pointer-events-none disabled:opacity-50 ${
             !formState.isValid ? 'pointer-events-none opacity-50' : ''
           }`}
           onClick={handleSubmit(onSubmit)}
-          disabled={!formState.isValid}
+          disabled={!formState.isValid || loading}
         >
-          <p className="text-sm font-semibold">SUBMIT PROJECT</p>
+          {loading ? (
+            <Spinner size="sm" color="white" marginRight="4" />
+          ) : (
+            <>
+              <p className="text-sm font-semibold">SUBMIT PROJECT</p>
+              <ArrowForwardIcon ml={1} color="#edddff" />
+            </>
+          )}
         </button>
       </div>
     </>

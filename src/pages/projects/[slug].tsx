@@ -5,6 +5,7 @@ import { Button, Image } from '@chakra-ui/react';
 import React, { useEffect, useState, useCallback } from 'react';
 import { Discord, Twitter, Telegram } from '@/svgs/socials';
 import { Project } from '@/components/Project';
+import Head from 'next/head';
 
 interface Data {
   logo: string;
@@ -86,7 +87,12 @@ export default function SlugPage({ data }: SlugPageProps) {
   }
 
   return (
-    <div>
+    <>
+      <Head>
+        <title>{data?.name} | Superteam Ecosystem</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className="mx-auto w-[90%] max-w-[1128px] py-28 md:py-44">
         <div className="flex flex-col justify-between md:flex-row">
           <div className="flex flex-col gap-5 md:flex-row md:items-center">
@@ -188,7 +194,7 @@ export default function SlugPage({ data }: SlugPageProps) {
         </div>
         <SimilarProjects categories={data.categories} />
       </div>
-    </div>
+    </>
   );
 }
 
