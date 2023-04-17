@@ -14,10 +14,10 @@ export default function Footer() {
               Managed by Superteam
             </p>
             <div className=" mt-4 flex gap-7 md:mt-8 ">
-              <Discord />
-              <Twitter />
-              <Github />
-              <Youtube />
+              <Discord link="https://discord.gg/uzujkHg6xy" />
+              <Twitter link="https://twitter.com/SuperteamDAO" />
+              <Github link="https://github.com/superteamDAO" />
+              <Youtube link="https://www.youtube.com/@superteampodcast" />
             </div>
           </div>
           <div className="flex flex-col text-center md:flex-row md:gap-36 md:text-left">

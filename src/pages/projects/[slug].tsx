@@ -131,6 +131,8 @@ export default function SlugPage({ data }: SlugPageProps) {
             py={4}
             px={16}
             size="lg"
+            className="hover:scale-105"
+            transition="all 0.3s ease-in-out"
             _hover={{
               borderColor:
                 'linear-gradient(315deg, #22093F 0%, #611CB8 33.85%, #A94EE4 77.08%, #DE78F8 100%)',

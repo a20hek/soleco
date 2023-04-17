@@ -14,8 +14,8 @@ export const TrendingSubProject = ({
   const router = useRouter();
   return (
     <div
-      className="group my-3 ml-auto mr-0 flex h-32 w-full cursor-pointer rounded-2xl bg-card
-      px-6 py-2 transition-all duration-500 hover:bg-black hover:ring-2 hover:ring-inset hover:ring-card"
+      className="group my-4 ml-auto mr-0 flex h-32 w-full cursor-pointer rounded-2xl bg-card px-6
+      py-2 transition-all duration-500 hover:bg-black hover:ring-2 hover:ring-inset hover:ring-card"
       onClick={() => {
         router.push(`${link}`);
       }}

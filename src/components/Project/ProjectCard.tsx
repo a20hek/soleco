@@ -15,8 +15,8 @@ export const Project = ({
   return (
     <Link href={`/projects/${slug}`} passHref>
       <div
-        className="group my-5 flex h-[22rem] w-[21rem] cursor-pointer flex-col justify-between
-      rounded-3xl bg-card transition-all duration-500 hover:scale-105 hover:bg-black hover:ring-2 hover:ring-inset hover:ring-card"
+        className="group my-5 flex h-[22rem] w-[21rem] cursor-pointer flex-col justify-between rounded-3xl bg-cardGradient
+      ring-2 ring-[#761BB1]/20 transition-all duration-500 hover:scale-105 "
       >
         <div className="p-6 transition-all duration-300 group-hover:h-3/5 md:h-2/5">
           <div className="flex justify-between">
@@ -52,7 +52,7 @@ export const Project = ({
               categories.slice(0, 3).map((category, i) => (
                 <div
                   key={i}
-                  className="h-fit rounded-md bg-neutral-900 py-1 px-2"
+                  className="h-fit rounded-md border border-white/10 py-1 px-2"
                 >
                   <p className="text-[0.65rem] capitalize text-neutral-300">
                     {category === 'Tools & Infrastructure'

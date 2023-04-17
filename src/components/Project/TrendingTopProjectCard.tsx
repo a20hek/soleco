@@ -15,7 +15,7 @@ export const TrendingTopProject = ({
 
   return (
     <div
-      className="group my-6 mr-4 h-[24rem] w-full cursor-pointer rounded-2xl bg-card 
+      className="group my-6 mr-4 h-[25rem] w-full cursor-pointer rounded-2xl bg-card
       transition-all duration-500 hover:bg-black hover:ring-2 hover:ring-inset hover:ring-card md:w-3/5"
       onClick={() => {
         router.push(`${link}`);

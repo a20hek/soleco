@@ -25,6 +25,7 @@ module.exports = {
         CTA: 'linear-gradient(295.49deg, #42008F 16.14%, #8533B8 83.86%)',
         gradient:
           'linear-gradient(315deg, #22093F 0%, #611CB8 33.85%, #A94EE4 77.08%, #DE78F8 100%)',
+        cardGradient: 'linear-gradient(180deg, #1C0529 0%, #000000 100%)',
       },
       fontFamily: {
         sans: ['var(--font-inter-tight)'],

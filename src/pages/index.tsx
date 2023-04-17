@@ -1,23 +1,11 @@
 import Head from 'next/head';
-import { Box, Button, Flex, useMediaQuery } from '@chakra-ui/react';
+import { Box, Button, Flex, useMediaQuery, Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import {
-  Twitter,
-  Discord,
-  Github,
-  Reddit,
-  Youtube,
-  Telegram,
-} from '@/svgs/socials';
-
-import {
-  TrendingSubProject,
-  TrendingTopProject,
-  Project,
-} from '@/components/Project';
-
+import { Twitter, Discord, Github, Youtube } from '@/svgs/socials';
+import { TrendingSubProject, TrendingTopProject } from '@/components/Project';
 import SplineAnimation from '@/components/SplineAnimation';
 import { supabase } from '@/lib/supabase';
+import Link from 'next/link';
 
 export default function Home() {
   const [isLargerthan668] = useMediaQuery('(min-width: 668px)');
@@ -43,6 +31,10 @@ export default function Home() {
             <h1 className="text-center text-5xl font-medium text-white md:text-7xl">
               Explore the thriving Solana Ecosystem
             </h1>
+            <h2 className="mx-auto mt-6 w-[80%] text-center text-xl text-primary-800">
+              Immerse yourself in over 420+ community-verified builds - from
+              DeFi to NFTs, the possibilities are endless.
+            </h2>
           </div>
           {/* <Image src="/globe.png" className="h-1/2 w-full" /> */}
           <div className="mt-6 flex flex-col justify-center gap-4 md:flex-row">
@@ -55,29 +47,9 @@ export default function Home() {
               h={14}
               mx={{ base: 'auto', md: '0px' }}
               w={{ base: '60%', md: 'auto' }}
-              onClick={() => router.push('/submit')}
+              onClick={() => router.push('/projects')}
               _hover={{ bg: '#edddff', color: '#651db8' }}
               _active={{ color: '#995aeo' }}
-            >
-              Submit a Project
-            </Button>
-            <Button
-              variant="outline"
-              borderWidth="2px"
-              rounded="full"
-              color="white"
-              _hover={{ bg: 'none', borderColor: '#995AE0' }}
-              _active={{
-                bg: 'none',
-                borderColor: '#CEA3FF',
-                color: '#CEA3FF',
-              }}
-              size="lg"
-              mx={{ base: 'auto', md: '0px' }}
-              w={{ base: '60%', md: 'auto' }}
-              px={12}
-              h={14}
-              onClick={() => router.push('/projects')}
             >
               Explore Projects
             </Button>
@@ -94,10 +66,15 @@ export default function Home() {
       </div>
 
       <div className="mx-auto w-[90%] max-w-[1128px]">
-        <h2 className="mt-10 text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl">
-          Top Projects
-        </h2>
-        <div className="flex w-full flex-col justify-between md:flex-row">
+        <div className="mt-24 flex items-center justify-between">
+          <h2 className="text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl">
+            Top Projects
+          </h2>
+          <p className="font-semibold text-primary-800 hover:underline">
+            <Link href="/projects">Explore more {'-->'}</Link>
+          </p>
+        </div>
+        <div className="flex w-full flex-col items-center justify-between md:flex-row">
           <TrendingTopProject
             logo="/backpacklogo.jpg"
             cover="/backpack.png"
@@ -124,15 +101,18 @@ export default function Home() {
               isSuperteam={true}
               link="/projects/candypay"
             />
-            <TrendingSubProject
-              logo="/rootlogo.png"
-              cover="/cubik-cover.png"
-              name="Root Protocol"
-              tagline="Traders can trade SOL, BTC, ETH or literally any SPL token with 1000x leverage. This new derivative primitive works without liquidations and does not depend on any oracle."
-              // categories={['DEX', 'Solana']}
-              isSuperteam={true}
-              link="/projects/root-protocol"
-            />
+            <div
+              className="group my-5 ml-auto mr-0 flex h-28 w-full cursor-pointer items-center justify-center gap-4 rounded-2xl
+      bg-card px-6 py-12 transition-all duration-500 hover:scale-105 hover:bg-black hover:ring-2 hover:ring-inset hover:ring-card"
+              onClick={() => {
+                router.push('/projects');
+              }}
+            >
+              <Image src="/stackedProjects.png" alt="/" h="64px" />
+              <p className="font-medium text-primary-800">
+                Explore other projects {'-->'}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -168,28 +148,18 @@ export default function Home() {
                 <p className="ml-3 text-lg font-semibold text-white">Twitter</p>
               </Flex>
               <Flex>
-                <Github />
+                <Github link="https://github.com/superteamDAO" />
                 <p className="ml-3 text-lg font-semibold text-white">Github</p>
-              </Flex>
-              <Flex>
-                <Telegram link="" />
-                <p className="ml-3 text-lg font-semibold text-white">
-                  Telegram
-                </p>
               </Flex>
             </Flex>
 
             <Flex flexDir="column" gap="16px" mx={4}>
               <Flex>
-                <Reddit />
-                <p className="ml-3 text-lg font-semibold text-white">Reddit</p>
-              </Flex>
-              <Flex>
-                <Discord link="" />
+                <Discord link="https://discord.gg/uzujkHg6xy" />
                 <p className="ml-3 text-lg font-semibold text-white">Discord</p>
               </Flex>
               <Flex>
-                <Youtube />
+                <Youtube link="https://www.youtube.com/@superteampodcast" />
                 <p className="ml-3 text-lg font-semibold text-white">Youtube</p>
               </Flex>
             </Flex>

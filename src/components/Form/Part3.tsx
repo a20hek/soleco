@@ -60,8 +60,8 @@ export default function Part3() {
     function createSlug(name: string) {
       return name
         .toLowerCase()
-        .replace(/[\s]+/g, '-') // Replace spaces with hyphens
-        .replace(/[^\w-]+/g, ''); // Remove special characters
+        .replace(/[\s]+/g, '-')
+        .replace(/[^\w-]+/g, '');
     }
 
     const slug = createSlug(formValues.name);
@@ -88,7 +88,7 @@ export default function Part3() {
     if (isSubmitted) {
       router.push('/submit/thank-you');
     }
-  }, [isSubmitted]);
+  }, [isSubmitted, router]);
 
   return (
     <>
