@@ -108,7 +108,11 @@ export default function Home() {
                 router.push('/projects');
               }}
             >
-              <Image src="/stackedProjects.png" alt="/" h="64px" />
+              <Image
+                src="/stackedProjects.png"
+                alt="/"
+                h={{ base: '42px', md: '64px' }}
+              />
               <p className="font-medium text-primary-800">
                 Explore other projects {'-->'}
               </p>

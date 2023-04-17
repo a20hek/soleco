@@ -41,7 +41,7 @@ export const TrendingSubProject = ({
                 ))}
             </div>
           </div>
-          <div className="mt-1 text-neutral-300">
+          <div className="mt-1 text-sm text-neutral-300 md:text-base">
             {overflowText(tagline, 120)}
           </div>
         </div>

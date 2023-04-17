@@ -2,6 +2,7 @@ import Logo from '@/svgs/logo';
 import { Discord, Github, Twitter, Youtube } from '@/svgs/socials';
 import { Divider } from '@chakra-ui/react';
 import React from 'react';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -25,16 +26,24 @@ export default function Footer() {
               <p className="mb-2 mt-10 text-xs font-semibold tracking-[0.08em] text-neutral-500 md:mt-0">
                 ECOSYSTEM
               </p>
-              <p className="my-4 text-primary-800 md:my-2">Explore</p>
-              <p className="my-4 text-primary-800 md:my-2">Submit Project</p>
+              <Link href="/projects">
+                <p className="my-4 text-primary-800 md:my-2">Explore</p>
+              </Link>
+              <Link href="/submit">
+                <p className="my-4 text-primary-800 md:my-2">Submit Project</p>
+              </Link>
             </div>
             <div>
               <p className="mb-2 mt-10 text-xs font-semibold tracking-[0.08em] text-neutral-500 md:mt-0">
                 MORE BY SUPERTEAM
               </p>
-              <p className="my-4 text-primary-800 md:my-2">Earn</p>
+              <Link href="https://earn.superteam.fun">
+                <p className="my-4 text-primary-800 md:my-2">Earn</p>
+              </Link>
               <p className="my-4 text-primary-800 md:my-2">Learn</p>
-              <p className="my-4 text-primary-800 md:my-2">Build</p>
+              <Link href="https://build.superteam.fun">
+                <p className="my-4 text-primary-800 md:my-2">Build</p>
+              </Link>
             </div>
           </div>
         </div>
