@@ -147,25 +147,41 @@ export default function Home() {
             mt={{ base: 10, md: 0 }}
           >
             <Flex flexDir="column" gap="16px" mx={4}>
-              <Flex>
-                <Twitter link="https://twitter.com/SuperteamDAO" />
-                <p className="ml-3 text-lg font-semibold text-white">Twitter</p>
-              </Flex>
-              <Flex>
-                <Github link="https://github.com/superteamDAO" />
-                <p className="ml-3 text-lg font-semibold text-white">Github</p>
-              </Flex>
+              <Link href="https://twitter.com/SuperteamDAO">
+                <Flex>
+                  <Twitter link="https://twitter.com/SuperteamDAO" />
+                  <p className="ml-3 text-lg font-semibold text-white">
+                    Twitter
+                  </p>
+                </Flex>
+              </Link>
+              <Link href="https://github.com/superteamDAO">
+                <Flex>
+                  <Github link="https://github.com/superteamDAO" />
+                  <p className="ml-3 text-lg font-semibold text-white">
+                    Github
+                  </p>
+                </Flex>
+              </Link>
             </Flex>
 
             <Flex flexDir="column" gap="16px" mx={4}>
-              <Flex>
-                <Discord link="https://discord.gg/uzujkHg6xy" />
-                <p className="ml-3 text-lg font-semibold text-white">Discord</p>
-              </Flex>
-              <Flex>
-                <Youtube link="https://www.youtube.com/@superteampodcast" />
-                <p className="ml-3 text-lg font-semibold text-white">Youtube</p>
-              </Flex>
+              <Link href="https://discord.gg/uzujkHg6xy">
+                <Flex>
+                  <Discord link="https://discord.gg/uzujkHg6xy" />
+                  <p className="ml-3 text-lg font-semibold text-white">
+                    Discord
+                  </p>
+                </Flex>
+              </Link>
+              <Link href="https://www.youtube.com/@superteampodcast">
+                <Flex>
+                  <Youtube link="https://www.youtube.com/@superteampodcast" />
+                  <p className="ml-3 text-lg font-semibold text-white">
+                    Youtube
+                  </p>
+                </Flex>
+              </Link>
             </Flex>
           </Flex>
         </div>

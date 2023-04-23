@@ -3,6 +3,7 @@ import { Image } from '@chakra-ui/react';
 import overflowText from '@/utils/overflow';
 import { ProjectType } from './ProjectInterface';
 import Link from 'next/link';
+import { categories as categoryJson } from 'constants/categories';
 
 export const Project = ({
   name,
@@ -12,6 +13,11 @@ export const Project = ({
   isSuperteam,
   slug,
 }: ProjectType) => {
+  const getCategoryLabel = (categoryValue: string) => {
+    const category = categoryJson.find((cat) => cat.value === categoryValue);
+    return category ? category.label : '';
+  };
+
   return (
     <Link href={`/projects/${slug}`} passHref>
       <div
@@ -55,11 +61,7 @@ export const Project = ({
                   className="h-fit rounded-md border border-white/10 py-1 px-2"
                 >
                   <p className="text-[0.65rem] capitalize text-neutral-300">
-                    {category === 'Tools & Infrastructure'
-                      ? 'Tools & Infra'
-                      : category === 'DAOs and Network States'
-                      ? 'DAO'
-                      : category}
+                    {getCategoryLabel(category)}
                   </p>
                 </div>
               ))}

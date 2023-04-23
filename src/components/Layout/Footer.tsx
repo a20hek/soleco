@@ -40,7 +40,9 @@ export default function Footer() {
               <Link href="https://earn.superteam.fun">
                 <p className="my-4 text-primary-800 md:my-2">Earn</p>
               </Link>
-              <p className="my-4 text-primary-800 md:my-2">Learn</p>
+              <Link href="https://www.youtube.com/@superteampodcast">
+                <p className="my-4 text-primary-800 md:my-2">Learn</p>
+              </Link>
               <Link href="https://build.superteam.fun">
                 <p className="my-4 text-primary-800 md:my-2">Build</p>
               </Link>

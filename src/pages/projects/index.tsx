@@ -26,9 +26,7 @@ const Projects = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleClick = (category: string) => {
-    setSelectedCategory(
-      category.toLowerCase() === selectedCategory ? '' : category.toLowerCase()
-    );
+    setSelectedCategory(category === selectedCategory ? '' : category);
     setCurrentPage(1);
   };
 
@@ -51,18 +49,22 @@ const Projects = () => {
     getProjects();
   }, []);
 
-  const filteredProjects = useMemo(
-    () =>
-      selectedCategory
-        ? projects.filter(
-            (project) =>
-              project.categories &&
-              project.categories.includes(selectedCategory)
+  const filteredProjects = useMemo(() => {
+    console.log('selectedCategory:', selectedCategory);
+    if (selectedCategory) {
+      const filtered = projects.filter(
+        (project) =>
+          project.categories &&
+          project.categories.some(
+            (category: any) => category === selectedCategory
           )
-        : projects,
-    [projects, selectedCategory]
-  );
-
+      );
+      console.log('filteredProjects:', filtered);
+      return filtered;
+    } else {
+      return projects;
+    }
+  }, [projects, selectedCategory]);
   const searchedProjects = useMemo(
     () =>
       debouncedSearchQuery
@@ -145,7 +147,7 @@ const Projects = () => {
                 selectedCategory={selectedCategory}
                 key={i}
                 name={category.value}
-                onClick={handleClick}
+                onClick={() => handleClick(category.value)}
               />
             ))}
             <div className="ml-24" />
@@ -163,7 +165,7 @@ const Projects = () => {
             <div className="flex flex-wrap justify-center gap-12">
               {projectSkeletons}
             </div>
-          ) : displayedProjects.length > 0 && totalPages > 1 ? (
+          ) : displayedProjects.length > 0 ? (
             displayedProjects.map((project, i) => (
               <Project
                 logo={project.logo}
