@@ -1,11 +1,23 @@
 import { useRouter } from 'next/router';
 import { supabase } from '@/lib/supabase';
 import LinkArrow from '@/svgs/LinkArrow';
-import { Button, Image } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  Flex,
+  IconButton,
+  Image,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+} from '@chakra-ui/react';
 import React, { useEffect, useState, useCallback } from 'react';
 import { Discord, Twitter, Telegram } from '@/svgs/socials';
 import { Project } from '@/components/Project';
 import Head from 'next/head';
+import { categories as categoryJson } from 'constants/categories';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 interface Data {
   logo: string;
@@ -63,7 +75,7 @@ function SimilarProjects({ categories }: { categories: string[] }) {
 
   return (
     <div>
-      <h2 className="mt-16 text-2xl font-semibold text-white">
+      <h2 className="mt-24 text-2xl font-semibold text-white">
         Similar Projects
       </h2>
       <div className="custom-scrollbar relative mt-4 overflow-x-auto text-white">
@@ -80,7 +92,56 @@ function SimilarProjects({ categories }: { categories: string[] }) {
 }
 
 export default function SlugPage({ data }: SlugPageProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const router = useRouter();
+
+  const getCategoryLabel = (categoryValue: string) => {
+    const category = categoryJson.find((cat) => cat.value === categoryValue);
+    return category ? category.label : '';
+  };
+
+  const openModal = (index: number) => {
+    setCurrentImageIndex(index);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const goNext = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === data.screenshots.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const goPrev = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? data.screenshots.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowLeft') {
+      goPrev();
+    } else if (event.key === 'ArrowRight') {
+      goNext();
+    }
+  };
+
+  const setupKeyListeners = () => {
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  };
+
+  useEffect(() => {
+    const cleanup = setupKeyListeners();
+    return cleanup;
+  }, []);
 
   if (router.isFallback) {
     return <div>Loading...</div>;
@@ -94,6 +155,50 @@ export default function SlugPage({ data }: SlugPageProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="mx-auto w-[90%] max-w-[1128px] py-28 md:py-44">
+        <Modal isOpen={isOpen} onClose={closeModal} size="full" isCentered>
+          <ModalOverlay />
+          <ModalContent bg="transparent" w="100%" h="100%" onClick={closeModal}>
+            <Flex
+              maxW="1300px"
+              mx="auto"
+              alignItems="center"
+              justifyContent="center"
+              h="100%"
+              position="relative"
+            >
+              <IconButton
+                aria-label="Back"
+                icon={<ArrowBackIcon />}
+                position="absolute"
+                top="50%"
+                left="0"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event propagation to ModalContent
+                  goPrev();
+                }}
+                zIndex="1"
+              />
+              <Image
+                src={data.screenshots[currentImageIndex]}
+                alt="/"
+                className="rounded object-cover"
+                onClick={(e) => e.stopPropagation()} // Prevent event propagation to ModalContent
+              />
+              <IconButton
+                aria-label="Next"
+                icon={<ArrowForwardIcon />}
+                position="absolute"
+                top="50%"
+                right="0"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event propagation to ModalContent
+                  goNext();
+                }}
+                zIndex="1"
+              />
+            </Flex>
+          </ModalContent>
+        </Modal>
         <div className="flex flex-col justify-between md:flex-row">
           <div className="flex flex-col gap-5 md:flex-row md:items-center">
             {data.logo ? (
@@ -157,7 +262,7 @@ export default function SlugPage({ data }: SlugPageProps) {
                   className="h-fit w-fit rounded-md bg-neutral-900 py-1 px-3"
                 >
                   <p className="text-xs capitalize text-neutral-300">
-                    {category}
+                    {getCategoryLabel(category)}
                   </p>
                 </div>
               );
@@ -177,13 +282,14 @@ export default function SlugPage({ data }: SlugPageProps) {
           {data.screenshots && data.screenshots.length > 0 ? (
             <div className="custom-scrollbar mt-4 flex flex-nowrap overflow-x-auto text-white">
               <div className="flex flex-nowrap gap-4 whitespace-nowrap">
-                {data.screenshots.map((screenshot: string) => (
-                  <Image
-                    key={screenshot}
-                    src={screenshot}
-                    alt="/"
-                    className="mb-6 h-72 w-[28rem] rounded object-cover"
-                  />
+                {data.screenshots.map((screenshot: string, index: number) => (
+                  <button onClick={() => openModal(index)} key={screenshot}>
+                    <Image
+                      src={screenshot}
+                      alt="/"
+                      className="h-72 w-[28rem] rounded object-cover"
+                    />
+                  </button>
                 ))}
               </div>
             </div>
@@ -202,17 +308,14 @@ export default function SlugPage({ data }: SlugPageProps) {
 
 export async function getStaticPaths() {
   const { data, error } = await supabase.from('projects').select('slug');
-
   if (error) {
     return {
       notFound: true,
     };
   }
-
   const paths = data.map((post) => ({
     params: { slug: post.slug },
   }));
-
   return { paths, fallback: 'blocking' };
 }
 
@@ -223,13 +326,11 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
     .select('*')
     .eq('slug', slug)
     .single();
-
   if (error) {
     return {
       notFound: true,
     };
   }
-
   return {
     props: {
       data,
