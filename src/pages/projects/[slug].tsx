@@ -173,16 +173,20 @@ export default function SlugPage({ data }: SlugPageProps) {
                 top="50%"
                 left="0"
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent event propagation to ModalContent
+                  e.stopPropagation();
                   goPrev();
                 }}
                 zIndex="1"
               />
               <Image
-                src={data.screenshots[currentImageIndex]}
+                src={
+                  data && data.screenshots
+                    ? data.screenshots[currentImageIndex]
+                    : '/default-image.jpg'
+                }
                 alt="/"
                 className="rounded object-cover"
-                onClick={(e) => e.stopPropagation()} // Prevent event propagation to ModalContent
+                onClick={(e) => e.stopPropagation()}
               />
               <IconButton
                 aria-label="Next"
@@ -191,7 +195,7 @@ export default function SlugPage({ data }: SlugPageProps) {
                 top="50%"
                 right="0"
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent event propagation to ModalContent
+                  e.stopPropagation();
                   goNext();
                 }}
                 zIndex="1"

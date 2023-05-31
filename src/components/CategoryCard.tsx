@@ -12,8 +12,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   selectedCategory,
   onClick,
 }) => {
-  const category = categories.find((category) => category.value === name); // find the category object that corresponds to the given value
-  const label = category ? category.label : ''; // get the label from the category object or set it to an empty string if the category is not found
+  const category = categories.find((category) => category.value === name);
+  const label = category ? category.label : '';
 
   const handleClick = () => {
     onClick(name);
