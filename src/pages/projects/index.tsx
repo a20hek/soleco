@@ -40,7 +40,7 @@ const Projects = () => {
     const getProjects = async () => {
       setIsLoading(true);
       const { data: projects, error } = await supabase
-        .from('projects_duplicate')
+        .from('projects')
         .select('*')
         .filter('isVerified', 'eq', true)
         .order('rank', { ascending: true });
