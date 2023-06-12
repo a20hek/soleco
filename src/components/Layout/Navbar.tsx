@@ -26,7 +26,7 @@ export default function Navbar() {
               transition="all 0.2s"
               _hover={{ bg: 'none', borderColor: '#995AE0', color: '#995AE0' }}
             >
-              <Link href="/projects">Submit Project</Link>
+              <Link href="/submit">Submit Project</Link>
             </Button>
           </div>
         </div>

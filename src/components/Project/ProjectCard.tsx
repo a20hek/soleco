@@ -3,7 +3,7 @@ import { Image } from '@chakra-ui/react';
 import overflowText from '@/utils/overflow';
 import { ProjectType } from './ProjectInterface';
 import Link from 'next/link';
-import { categories as categoryJson } from 'constants/categories';
+import { categories as categoryJson } from '@/constants/categories';
 
 export const Project = ({
   name,

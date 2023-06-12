@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
-import { categories } from 'constants/categories';
+import { categories } from '@/constants/categories';
 import { Project } from '@/components/Project';
 import CategoryCard from '@/components/CategoryCard';
 import Pagination from '@/components/Pagination';

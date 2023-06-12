@@ -1,7 +1,7 @@
 import { formAtom } from '@/context/formStage';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
-import { categories } from 'constants/categories';
+import { categories } from '@/constants/categories';
 import { useAtom } from 'jotai';
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller, useFormContext } from 'react-hook-form';

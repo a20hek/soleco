@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import Navbar from '@/components/Layout/Navbar';
 import { Inter, Inter_Tight } from '@next/font/google';
-import { theme } from 'config/chakra.config';
+import { theme } from '@/config/chakra.config';
 import { Analytics } from '@vercel/analytics/react';
 import Footer from '@/components/Layout/Footer';
 

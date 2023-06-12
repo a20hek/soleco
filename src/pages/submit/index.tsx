@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from '@chakra-ui/react';
 import { CheckIcon } from '@/svgs/submit';
 import { FormProvider, useForm } from 'react-hook-form';
-import { sections } from 'constants/sections';
+import { sections } from '@/constants/sections';
 import { useRouter } from 'next/router';
 import Part1 from '@/components/Form/Part1';
 import Part2 from '@/components/Form/Part2';

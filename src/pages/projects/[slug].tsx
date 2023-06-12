@@ -16,7 +16,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Discord, Twitter, Telegram } from '@/svgs/socials';
 import { Project } from '@/components/Project';
 import Head from 'next/head';
-import { categories as categoryJson } from 'constants/categories';
+import { categories as categoryJson } from '@/constants/categories';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 interface Data {
